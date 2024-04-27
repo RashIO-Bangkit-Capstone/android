@@ -1,4 +1,4 @@
-package id.rashio.android.ui.screen.login
+package id.rashio.android.ui.screen.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -19,6 +19,8 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,27 +50,24 @@ import id.rashio.android.R
 import id.rashio.android.ui.theme.poppinsFontFamily
 
 @Composable
-fun LoginScreen(
-    modifier: Modifier = Modifier,
-    navController: NavController
-) {
+fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 28.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Center
     ) {
 
         Text(
-            text = stringResource(R.string.login),
+            text = stringResource(R.string.register),
             color = MaterialTheme.colorScheme.primary,
             fontFamily = poppinsFontFamily,
             fontWeight = FontWeight.SemiBold,
             fontSize = 36.sp
         )
         Text(
-            text = stringResource(R.string.login_description),
+            text = stringResource(R.string.register_desc),
             color = MaterialTheme.colorScheme.primary,
             fontFamily = poppinsFontFamily,
             fontWeight = FontWeight.Medium,
@@ -76,11 +75,30 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Image(
-            painter = painterResource(id = R.drawable.vector_login),
-            contentDescription = "Login Vector",
+            painter = painterResource(id = R.drawable.vector_register),
+            contentDescription = "Register Vector",
             modifier = Modifier.size(150.dp)
         )
+
         Spacer(modifier = Modifier.height(24.dp))
+
+        var nameValue by remember { mutableStateOf("") }
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(stringResource(R.string.nama)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
+            singleLine = true,
+            value = nameValue,
+            onValueChange = {
+                nameValue = it
+            },
+            leadingIcon = {
+                Icon(Icons.Rounded.Person, contentDescription = "Person Icon")
+            }
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
 
         var emailValue by remember { mutableStateOf("") }
         OutlinedTextField(
@@ -94,8 +112,7 @@ fun LoginScreen(
             },
             leadingIcon = {
                 Icon(Icons.Rounded.Email, contentDescription = "Email Icon")
-            },
-
+            }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -108,18 +125,11 @@ fun LoginScreen(
         else
             Icons.Filled.VisibilityOff
 
-        val localFocusManager = LocalFocusManager.current
-
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             label = { Text(stringResource(R.string.password)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Next),
             singleLine = true,
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    localFocusManager.clearFocus()
-                }
-            ),
             value = passwordValue,
             onValueChange = {
                 passwordValue = it
@@ -141,9 +151,31 @@ fun LoginScreen(
             else PasswordVisualTransformation()
         )
 
+        var phoneValue by remember { mutableStateOf("") }
+        val localFocusManager = LocalFocusManager.current
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(stringResource(R.string.no_hp)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone, imeAction = ImeAction.Done),
+            singleLine = true,
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    localFocusManager.clearFocus()
+                }
+            ),
+            value = phoneValue,
+            onValueChange = {
+                phoneValue = it
+            },
+            leadingIcon = {
+                Icon(Icons.Rounded.Phone, contentDescription = "Phone Icon")
+            }
+        )
+
         Spacer(modifier = Modifier.height(24.dp))
+
         Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth()) {
-            Text(text = stringResource(id = R.string.login))
+            Text(text = stringResource(id = R.string.register))
         }
         Spacer(modifier = Modifier.height(8.dp))
         Row {
@@ -156,13 +188,13 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = stringResource(R.string.register),
+                text = stringResource(R.string.login),
                 color = MaterialTheme.colorScheme.secondary,
                 fontFamily = poppinsFontFamily,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
                 modifier = Modifier.clickable {
-                    navController.navigate("Register")
+                    navController.navigate("Login")
                 }
             )
         }

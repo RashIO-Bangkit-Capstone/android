@@ -8,4 +8,7 @@
     <string name="register_button_desc">Belum punya akun?</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
+    <string name="register_desc"> Silahkan mendaftar untuk membuat akun</string>
+    <string name="nama">Nama</string>
+    <string name="no_hp">No. HP</string>
 </resources>

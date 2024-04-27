@@ -1,11 +1,5 @@
-package id.rashio.android
+package id.rashio.android.ui.screen.splash_screen
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,28 +21,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import id.rashio.android.ui.theme.AppTheme
+import androidx.navigation.NavController
+import id.rashio.android.R
 import id.rashio.android.ui.theme.poppinsFontFamily
 import kotlinx.coroutines.delay
 
-@SuppressLint("CustomSplashScreen")
-class SplashActivity : ComponentActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        setContent {
-            AppTheme {
-                SplashScreen()
-            }
-        }
-    }
-
-    @Composable
-    private fun SplashScreen() {
+@Composable
+    fun SplashScreen(navController: NavController) {
 
         LaunchedEffect(key1 = true) {
             delay(2000)
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            navController.popBackStack()
+            navController.navigate("Login")
         }
         val linear = Brush.linearGradient(
             listOf(
@@ -93,5 +78,3 @@ class SplashActivity : ComponentActivity() {
 
         }
     }
-
-}
