@@ -162,6 +162,7 @@ fun LoginScreen(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
                 modifier = Modifier.clickable {
+                    navController.popBackStack()
                     navController.navigate("Register")
                 }
             )
