@@ -148,7 +148,7 @@ fun LoginScreen(
         Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(id = R.string.login))
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         Row {
             Text(
                 text = stringResource(R.string.register_button_desc),

@@ -180,10 +180,10 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
         Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(id = R.string.register))
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         Row {
             Text(
-                text = stringResource(R.string.register_button_desc),
+                text = stringResource(R.string.login_button_desc),
                 color = Color.Black,
                 fontFamily = poppinsFontFamily,
                 fontWeight = FontWeight.Medium,

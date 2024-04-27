@@ -11,4 +11,5 @@
     <string name="register_desc"> Silahkan mendaftar untuk membuat akun</string>
     <string name="nama">Nama</string>
     <string name="no_hp">No. HP</string>
+    <string name="login_button_desc">Sudah punya akun?</string>
 </resources>
