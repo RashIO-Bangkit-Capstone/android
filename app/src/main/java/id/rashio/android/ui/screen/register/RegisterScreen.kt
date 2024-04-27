@@ -13,21 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.Email
-import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,22 +30,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import id.rashio.android.R
+import id.rashio.android.ui.components.PasswordTextField
+import id.rashio.android.ui.components.TextFieldWithIcon
 import id.rashio.android.ui.theme.poppinsFontFamily
 
 @Composable
 fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) {
+    var nameValue by remember { mutableStateOf("") }
+    var emailValue by remember { mutableStateOf("") }
+    var passwordValue by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var phoneValue by remember { mutableStateOf("") }
+
+
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -85,94 +84,56 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        var nameValue by remember { mutableStateOf("") }
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.nama)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
-            singleLine = true,
+        TextFieldWithIcon(
+            label = stringResource(R.string.nama),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
             value = nameValue,
-            onValueChange = {
-                nameValue = it
-            },
-            leadingIcon = {
-                Icon(Icons.Rounded.Person, contentDescription = "Person Icon")
-            }
+            onValueChange = { nameValue = it },
+            leadingIcon = Icons.Rounded.Person,
+            contentDescription = "Person Icon"
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-
-        var emailValue by remember { mutableStateOf("") }
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.email)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
-            singleLine = true,
-            value = emailValue,
-            onValueChange = {
-                emailValue = it
-            },
-            leadingIcon = {
-                Icon(Icons.Rounded.Email, contentDescription = "Email Icon")
-            }
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        var passwordValue by remember { mutableStateOf("") }
-        var passwordVisible by remember { mutableStateOf(false) }
-
-        val icon = if (passwordVisible)
-            Icons.Filled.Visibility
-        else
-            Icons.Filled.VisibilityOff
-
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.password)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Next),
-            singleLine = true,
-            value = passwordValue,
-            onValueChange = {
-                passwordValue = it
-            },
-            leadingIcon = {
-                Icon(Icons.Rounded.Lock, contentDescription = "Lock Icon")
-            },
-            trailingIcon = {
-                IconButton(onClick = {
-                    passwordVisible = !passwordVisible
-                }) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = "Visibility Icon"
-                    )
-                }
-            },
-            visualTransformation = if (passwordVisible) VisualTransformation.None
-            else PasswordVisualTransformation()
-        )
-
-        var phoneValue by remember { mutableStateOf("") }
-        val localFocusManager = LocalFocusManager.current
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.no_hp)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone, imeAction = ImeAction.Done),
-            singleLine = true,
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    localFocusManager.clearFocus()
-                }
+        TextFieldWithIcon(
+            label = stringResource(R.string.no_hp),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Phone,
+                imeAction = ImeAction.Next
             ),
             value = phoneValue,
-            onValueChange = {
-                phoneValue = it
-            },
-            leadingIcon = {
-                Icon(Icons.Rounded.Phone, contentDescription = "Phone Icon")
-            }
+            onValueChange = { phoneValue = it },
+            leadingIcon = Icons.Rounded.Phone,
+            contentDescription = "Phone Icon"
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextFieldWithIcon(
+            label = stringResource(R.string.email),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next
+            ),
+            value = emailValue,
+            onValueChange = { emailValue = it },
+            leadingIcon = Icons.Rounded.Email,
+            contentDescription = "Email Icon",
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+
+        PasswordTextField(
+            passwordValue = passwordValue,
+            onPasswordChange = { passwordValue = it },
+            passwordVisible = passwordVisible,
+            onPasswordVisibilityToggle = { passwordVisible = !passwordVisible },
+            label = stringResource(R.string.password),
+            imeAction = ImeAction.Done,
         )
 
         Spacer(modifier = Modifier.height(24.dp))

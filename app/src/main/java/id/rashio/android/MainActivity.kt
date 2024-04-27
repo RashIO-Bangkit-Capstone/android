@@ -42,7 +42,6 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
 
                             )
-
                         }
                         composable("Register"){
                             RegisterScreen(navController = navController)
