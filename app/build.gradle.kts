@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kaptKotlin)
+    alias(libs.plugins.daggerHilt)
 }
 
 android {
@@ -70,4 +72,18 @@ dependencies {
     //    Navigation Compose
     implementation(libs.androidx.compose.navigation)
     implementation(libs.material.icons.extended)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+
+    //    Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+    //    DataStore
+    implementation(libs.androidx.datastore.preferences)
+
 }

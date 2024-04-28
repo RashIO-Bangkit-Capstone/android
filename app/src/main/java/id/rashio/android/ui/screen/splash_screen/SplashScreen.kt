@@ -28,53 +28,53 @@ import kotlinx.coroutines.delay
 
 
 @Composable
-    fun SplashScreen(navController: NavController) {
+fun SplashScreen(navController: NavController) {
 
-        LaunchedEffect(key1 = true) {
-            delay(2000)
-            navController.popBackStack()
-            navController.navigate("Login")
-        }
-        val linear = Brush.linearGradient(
-            listOf(
-                Color(0XFFF9F9F9), Color(0XFFCA965C)
-            ),
-            start = Offset(0f, 0f),
-            end = Offset(0f, 3500f)
-        )
-        Box(
+    LaunchedEffect(key1 = true) {
+        delay(2000)
+        navController.popBackStack()
+        navController.navigate("Login")
+    }
+    val linear = Brush.linearGradient(
+        listOf(
+            Color(0XFFF9F9F9), Color(0XFFCA965C)
+        ),
+        start = Offset(0f, 0f),
+        end = Offset(0f, 3500f)
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(linear),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(linear),
-            contentAlignment = Alignment.Center
+                .padding(horizontal = 28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 28.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.rashio_logo),
-                    contentDescription = "RashIO Logo",
-                )
-                Text(
-                    text = "Stay Informed, Take Action.\n" +
-                            "Detection and Prevention in One Place!",
-                    fontFamily = poppinsFontFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 15.sp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
             Image(
-                painter = painterResource(id = R.drawable.vector_splash),
-                contentDescription = "Splash Vector",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
+                painter = painterResource(id = R.drawable.rashio_logo),
+                contentDescription = "RashIO Logo",
             )
-
+            Text(
+                text = "Stay Informed, Take Action.\n" +
+                        "Detection and Prevention in One Place!",
+                fontFamily = poppinsFontFamily,
+                fontWeight = FontWeight.Medium,
+                fontSize = 15.sp,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
+        Image(
+            painter = painterResource(id = R.drawable.vector_splash),
+            contentDescription = "Splash Vector",
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+        )
+
     }
+}
