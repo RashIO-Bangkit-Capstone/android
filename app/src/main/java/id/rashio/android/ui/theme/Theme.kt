@@ -42,7 +42,7 @@ private val lightScheme = lightColorScheme(
     inverseSurface = inverseSurfaceLight,
     inverseOnSurface = inverseOnSurfaceLight,
     inversePrimary = inversePrimaryLight,
-    )
+)
 
 private val darkScheme = darkColorScheme(
     primary = primaryDark,
