@@ -1,4 +1,4 @@
-package id.rashio.android.ui.screen.home
+package id.rashio.android.ui.screen.profile
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -11,9 +11,8 @@ import androidx.navigation.NavController
 import id.rashio.android.ui.components.BottomNavBar
 import id.rashio.android.ui.components.BottomNavigationItem
 
-
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun ProfileScreen(modifier: Modifier = Modifier, navController: NavController) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
         bottomBar = {
             BottomNavBar(
@@ -22,7 +21,7 @@ fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
             )
         }, content = { innerPadding ->
             Column(modifier = Modifier.consumeWindowInsets(innerPadding)) {
-                Text(text = "Home Screen")
+                Text(text = "Profile Screen")
             }
         })
 }
