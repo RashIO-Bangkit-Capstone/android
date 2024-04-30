@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -24,17 +23,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import id.rashio.android.R
 import id.rashio.android.ui.theme.poppinsFontFamily
-import kotlinx.coroutines.delay
 
 
 @Composable
 fun SplashScreen(navController: NavController) {
 
-    LaunchedEffect(key1 = true) {
-        delay(2000)
-        navController.popBackStack()
-        navController.navigate("Login")
-    }
+//    LaunchedEffect(key1 = true) {
+//        delay(2000)
+//        navController.popBackStack()
+//        navController.navigate("Login")
+//    }
     val linear = Brush.linearGradient(
         listOf(
             Color(0XFFF9F9F9), Color(0XFFCA965C)

@@ -4,6 +4,13 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -41,10 +48,18 @@ class MainActivity : ComponentActivity() {
                     LaunchedEffect(key1 = authState.value) {
                         when (authState.value) {
                             AuthenticationState.Authenticated ->
-                                navController.navigate("Home")
+                                navController.navigate("Home") {
+                                    popUpTo("Login") {
+                                        inclusive = true
+                                    }
+                                }
 
                             AuthenticationState.Unauthenticated ->
-                                navController.navigate("Login")
+                                navController.navigate("Login") {
+                                    popUpTo("Splash") {
+                                        inclusive = true
+                                    }
+                                }
 
                             AuthenticationState.Unknown -> {
                                 // Do nothing
@@ -59,14 +74,54 @@ class MainActivity : ComponentActivity() {
                         composable("Splash") {
                             SplashScreen(navController = navController)
                         }
-                        composable("Login") {
+                        composable("Login",
+                            enterTransition = {
+                                fadeIn(
+                                    animationSpec = tween(
+                                        300, easing = LinearEasing
+                                    )
+                                ) + slideIntoContainer(
+                                    animationSpec = tween(300, easing = EaseIn),
+                                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                                )
+                            },
+                            exitTransition = {
+                                fadeOut(
+                                    animationSpec = tween(
+                                        300, easing = LinearEasing
+                                    )
+                                ) + slideOutOfContainer(
+                                    animationSpec = tween(300, easing = EaseIn),
+                                    towards = AnimatedContentTransitionScope.SlideDirection.End
+                                )
+                            }
+                        ) {
                             LoginScreen(navigateToRegister = {
                                 navController.navigate("Register")
                             }, onLogin = { email, password ->
                                 mainViewModel.login(email, password)
                             })
                         }
-                        composable("Register") {
+                        composable("Register"
+                            ,
+                            enterTransition = {
+                                fadeIn(
+                                    animationSpec = tween(
+                                        300, easing = LinearEasing
+                                    )
+                                ) + slideIntoContainer(
+                                    animationSpec = tween(300, easing = EaseOut),
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                                )
+                            },
+                            exitTransition = {
+                                fadeOut(
+                                    animationSpec = tween(
+                                        300, easing = LinearEasing
+                                    )
+                                )
+                            }
+                        ) {
                             RegisterScreen(navController = navController)
                         }
                         composable("Home") {
