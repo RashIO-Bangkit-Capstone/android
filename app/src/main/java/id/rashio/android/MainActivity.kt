@@ -24,7 +24,9 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import id.rashio.android.ui.screen.auth.login.LoginScreen
 import id.rashio.android.ui.screen.auth.register.RegisterScreen
+import id.rashio.android.ui.screen.detection.DetectionScreen
 import id.rashio.android.ui.screen.home.HomeScreen
+import id.rashio.android.ui.screen.profile.ProfileScreen
 import id.rashio.android.ui.screen.splash_screen.SplashScreen
 import id.rashio.android.ui.theme.AppTheme
 
@@ -126,6 +128,12 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("Home") {
                             HomeScreen(navController = navController)
+                        }
+                        composable("Detection") {
+                            DetectionScreen(navController = navController)
+                        }
+                        composable("Profile") {
+                            ProfileScreen(navController = navController)
                         }
                     }
                 }

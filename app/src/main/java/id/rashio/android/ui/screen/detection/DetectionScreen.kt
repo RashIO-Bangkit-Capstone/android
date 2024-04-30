@@ -1,4 +1,4 @@
-package id.rashio.android.ui.screen.home
+package id.rashio.android.ui.screen.detection
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -11,18 +11,17 @@ import androidx.navigation.NavController
 import id.rashio.android.ui.components.BottomNavBar
 import id.rashio.android.ui.components.BottomNavigationItem
 
-
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun DetectionScreen(modifier: Modifier = Modifier, navController: NavController) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
-        bottomBar = {
-            BottomNavBar(
-                navController = navController,
-                items = BottomNavigationItem.getMenuBottomItems()
-            )
-        }, content = { innerPadding ->
-            Column(modifier = Modifier.consumeWindowInsets(innerPadding)) {
-                Text(text = "Home Screen")
-            }
-        })
+    bottomBar = {
+        BottomNavBar(
+            navController = navController,
+            items = BottomNavigationItem.getMenuBottomItems()
+        )
+    }, content = { innerPadding ->
+        Column(modifier = androidx.compose.ui.Modifier.consumeWindowInsets(innerPadding)) {
+            Text(text = "Detection Screen")
+        }
+    })
 }
