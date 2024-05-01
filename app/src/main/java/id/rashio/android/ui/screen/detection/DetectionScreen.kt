@@ -21,7 +21,9 @@ fun DetectionScreen(modifier: Modifier = Modifier, navController: NavController)
         )
     }, content = { innerPadding ->
         Column(modifier = androidx.compose.ui.Modifier.consumeWindowInsets(innerPadding)) {
+
             Text(text = "Detection Screen")
         }
     })
+
 }
