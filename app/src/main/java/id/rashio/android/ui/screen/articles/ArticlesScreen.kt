@@ -1,4 +1,4 @@
-package id.rashio.android.ui.screen.detection
+package id.rashio.android.ui.screen.articles
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -12,7 +12,7 @@ import id.rashio.android.ui.components.BottomNavBar
 import id.rashio.android.ui.components.BottomNavigationItem
 
 @Composable
-fun DetectionScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun ArticlesScreen(modifier: Modifier = Modifier, navController: NavController) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
         bottomBar = {
             BottomNavBar(
@@ -22,7 +22,7 @@ fun DetectionScreen(modifier: Modifier = Modifier, navController: NavController)
         }, content = { innerPadding ->
             Column(modifier = Modifier.consumeWindowInsets(innerPadding)) {
 
-                Text(text = "Detection Screen")
+                Text(text = "Articles Screen")
             }
         })
 

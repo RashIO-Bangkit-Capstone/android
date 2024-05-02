@@ -14,12 +14,12 @@ interface ApiService {
     suspend fun login(
         @Body loginRequest: LoginRequest,
         @Header("Content-Type") contentType: String = "application/json"
-    ): LoginResponse
+    ): Result<LoginResponse>
 
     @POST("/v1/users")
     suspend fun register(
         @Body registerRequest: RegisterRequest,
         @Header("Content-Type") contentType: String = "application/json"
-    ): RegisterResponse
+    ): Result<RegisterResponse>
 
 }

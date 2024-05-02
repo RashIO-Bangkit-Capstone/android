@@ -22,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import id.rashio.android.ui.screen.articles.ArticlesScreen
 import id.rashio.android.ui.screen.auth.login.LoginScreen
 import id.rashio.android.ui.screen.auth.register.RegisterScreen
 import id.rashio.android.ui.screen.detection.DetectionScreen
@@ -100,12 +101,9 @@ class MainActivity : ComponentActivity() {
                         ) {
                             LoginScreen(navigateToRegister = {
                                 navController.navigate("Register")
-                            }, onLogin = { email, password ->
-                                mainViewModel.login(email, password)
                             })
                         }
-                        composable("Register"
-                            ,
+                        composable("Register",
                             enterTransition = {
                                 fadeIn(
                                     animationSpec = tween(
@@ -124,7 +122,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         ) {
-                            RegisterScreen(navController = navController)
+                            RegisterScreen(navigateBack = navController::navigateUp)
                         }
                         composable("Home") {
                             HomeScreen(navController = navController)
@@ -134,6 +132,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("Profile") {
                             ProfileScreen(navController = navController)
+                        }
+                        composable("Articles") {
+                            ArticlesScreen(navController = navController)
                         }
                     }
                 }

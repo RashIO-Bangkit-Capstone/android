@@ -16,6 +16,7 @@ class ApiConfig {
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://api-dev.rashio.software/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(NetworkCallAdapterFactory.create())
                 .client(client)
                 .build()
             return retrofit.create(ApiService::class.java)

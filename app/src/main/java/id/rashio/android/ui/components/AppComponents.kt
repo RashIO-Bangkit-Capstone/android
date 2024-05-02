@@ -187,11 +187,6 @@ fun RegisterPasswordTextField(
             }
         },
         visualTransformation = visualTransformation,
-        keyboardActions = KeyboardActions(
-            onDone = {
-                localFocusManager.clearFocus()
-            }
-        ),
         interactionSource = interactionSource,
         isError = if (isFocused) passwordValue.length < 8 else false,
         supportingText = {

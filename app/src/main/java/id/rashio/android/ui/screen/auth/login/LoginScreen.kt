@@ -1,9 +1,10 @@
 package id.rashio.android.ui.screen.auth.login
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,9 +20,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +41,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import id.rashio.android.R
 import id.rashio.android.ui.components.EmailFieldWithIcon
 import id.rashio.android.ui.components.PasswordTextField
@@ -44,12 +50,40 @@ import id.rashio.android.ui.theme.poppinsFontFamily
 @Composable
 fun LoginScreen(
     navigateToRegister: () -> Unit,
-    onLogin: (String, String) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     var emailValue by remember { mutableStateOf("") }
     var passwordValue by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+
+    val uiState = viewModel.uiState.collectAsState().value
+    when (uiState) {
+        is LoginUiState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                // Show loading
+                CircularProgressIndicator()
+            }
+        }
+
+        is LoginUiState.Success -> {
+            // Navigate to home
+            LaunchedEffect(key1 = uiState.authenticated) {
+                if (uiState.authenticated) {
+                    // Navigate to home
+                    navigateToRegister()
+                }
+            }
+
+        }
+
+        is LoginUiState.Error -> {
+            // Show error
+            val context = LocalContext.current
+            val message = uiState.message
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -112,7 +146,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(onClick = {
-            onLogin(emailValue, passwordValue)
+            viewModel.login(emailValue, passwordValue)
         }, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(id = R.string.login))
         }

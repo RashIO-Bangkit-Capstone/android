@@ -1,8 +1,10 @@
 package id.rashio.android.ui.screen.auth.register
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,9 +22,12 @@ import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,8 +45,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import id.rashio.android.MainViewModel
 import id.rashio.android.R
 import id.rashio.android.ui.components.ConfirmPasswordTextField
 import id.rashio.android.ui.components.EmailFieldWithIcon
@@ -50,9 +54,9 @@ import id.rashio.android.ui.theme.poppinsFontFamily
 
 @Composable
 fun RegisterScreen(
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavController,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: RegisterViewModel = hiltViewModel()
 ) {
     var nameValue by remember { mutableStateOf("") }
     var emailValue by remember { mutableStateOf("") }
@@ -63,6 +67,32 @@ fun RegisterScreen(
 
     val registerButtonEnabled by remember { derivedStateOf { (passwordValue == confirmPassword) and (passwordValue.isNotBlank() and confirmPassword.isNotBlank()) } }
 
+    val uiState = viewModel.uiState.collectAsState().value
+    when (uiState) {
+        is RegisterUiState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                // Show loading
+                CircularProgressIndicator()
+            }
+        }
+
+        is RegisterUiState.Success -> {
+            // Navigate to home
+            LaunchedEffect(key1 = uiState.authenticated) {
+                if (uiState.authenticated) {
+                    navigateBack()
+                }
+            }
+
+        }
+
+        is RegisterUiState.Error -> {
+            // Show error
+            val context = LocalContext.current
+            val message = uiState.message
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -187,8 +217,8 @@ fun RegisterScreen(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
                 modifier = Modifier.clickable {
-                    navController.popBackStack()
-                    navController.navigate("Login")
+
+                    navigateBack()
                 }
             )
         }
