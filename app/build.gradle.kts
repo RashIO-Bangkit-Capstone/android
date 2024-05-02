@@ -86,4 +86,11 @@ dependencies {
     //    DataStore
     implementation(libs.androidx.datastore.preferences)
 
+    // Coil
+    implementation(libs.coil.compose)
+
+    // Location Service
+    implementation (libs.play.services.location)
+
+
 }

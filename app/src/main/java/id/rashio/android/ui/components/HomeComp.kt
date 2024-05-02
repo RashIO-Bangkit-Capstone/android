@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,13 +26,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import id.rashio.android.R
 import id.rashio.android.ui.theme.poppinsFontFamily
 
@@ -150,7 +155,9 @@ fun BannerHome() {
             )
 
             Image(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .size(140.dp),
                 painter = painterResource(id = R.drawable.banner_vector),
                 contentDescription = null,
 
@@ -164,12 +171,12 @@ fun BannerHome() {
 fun ItemFeature(image: Int, text: Int, destination: String, navController: NavController) {
     Box(
         modifier = Modifier
-            .size(width = 90.dp, height = 80.dp)
-            .clip(RoundedCornerShape(8.dp))
+            .size(width = 88.dp, height = 90.dp)
+            .clip(RoundedCornerShape(30.dp))
             .shadow(
-                elevation = 14.dp,
+                elevation = 25.dp,
                 spotColor = Color.Black,
-                shape = RoundedCornerShape(9.dp)
+                shape = RoundedCornerShape(30.dp)
             )
             .background(Color(0XFFFCF5E7))
             .padding(8.dp)
@@ -202,4 +209,84 @@ fun ItemFeature(image: Int, text: Int, destination: String, navController: NavCo
             )
         }
     }
+}
+
+@Composable
+fun HeadingText(text: String) {
+    Text(
+        text = text,
+        color = MaterialTheme.colorScheme.primary,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        modifier = Modifier.padding(16.dp)
+    )
+}
+
+@Composable
+fun ItemArticle(title: String, author: String, imageUrl: String) {
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+    ) {
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .weight(1f)
+            )
+            Column(modifier = Modifier.weight(2f)) {
+                Text(
+                    text = title,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = poppinsFontFamily,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+                Row {
+                    Text(
+                        text = "by",
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = poppinsFontFamily,
+                        fontSize = 10.sp,
+                        modifier = Modifier.padding(start = 8.dp),
+                    )
+                    Text(
+                        text = author,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = poppinsFontFamily,
+                        fontSize = 10.sp,
+                        modifier = Modifier.padding(start = 4.dp),
+                        textDecoration = TextDecoration.Underline
+                    )
+                }
+            }
+//            Icons.Outlined.BookmarkBorder
+//            Image(
+//                painter = painterResource(),
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .scale(2)
+//                    .weight(1f)
+//            )
+            Image(
+                painter = painterResource(id = R.drawable.baseline_bookmark_border_24),
+                contentDescription = null,
+                modifier = Modifier.weight(1f)
+            )
+        }
+
+
+    }
+
 }
