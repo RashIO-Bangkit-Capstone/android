@@ -77,6 +77,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    implementation (libs.converter.moshi)
+
 
     //    Hilt
     implementation(libs.hilt.android)
@@ -91,6 +93,10 @@ dependencies {
 
     // Location Service
     implementation (libs.play.services.location)
+
+    // Accompaniest
+    implementation (libs.accompanist.permissions)
+
 
 
 }

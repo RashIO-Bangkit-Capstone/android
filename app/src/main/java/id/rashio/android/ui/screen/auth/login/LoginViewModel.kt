@@ -8,6 +8,8 @@ import id.rashio.android.data.repository.AuthenticationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.util.Base64
 import javax.inject.Inject
 
 
@@ -26,7 +28,21 @@ class LoginViewModel @Inject constructor(
         _uiState.value = LoginUiState.Loading
         authenticationRepository.login(email, password)
             .onSuccess { response ->
-                tokenPreference.saveToken(response.data.accessToken)
+                val token = response.data.accessToken
+                val body = token.split(".").get(1)
+                val decoded = Base64.getDecoder().decode(body)
+                val jsonObject = JSONObject(String(decoded))
+                val name = jsonObject.getString("name")
+                val phoneNumber = jsonObject.getString("phoneNumber")
+                val id = jsonObject.getString("id")
+                tokenPreference.saveUserData(
+                    name = name,
+                    email = email,
+                    phoneNumber = phoneNumber,
+                    token = token,
+                    id = id
+
+                )
                 _uiState.value = LoginUiState.Success(authenticated = true)
             }
             .onFailure { e ->

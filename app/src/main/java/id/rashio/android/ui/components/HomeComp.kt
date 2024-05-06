@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,9 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -37,11 +40,104 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import id.rashio.android.R
+import id.rashio.android.ui.screen.home.WeatherState
 import id.rashio.android.ui.theme.poppinsFontFamily
+import kotlin.math.roundToInt
 
 @Composable
-fun Greetings() {
+fun WeatherDataDetail(
+    value: Int,
+    unit: String,
+    icon: ImageVector,
+    desc: String,
+    modifier: Modifier = Modifier,
+    iconTint: Color = MaterialTheme.colorScheme.primary
+) {
 
+    Row(modifier = Modifier.padding(12.dp)) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = iconTint,
+            modifier = Modifier.size(20.dp)
+        )
+        Column(modifier = Modifier.padding(start = 4.dp)) {
+            Text(
+                text = "$value $unit",
+                fontWeight = FontWeight.Medium,
+                fontFamily = poppinsFontFamily,
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 10.sp
+            )
+            Text(
+                text = desc,
+                fontSize = 10.sp,
+                fontFamily = poppinsFontFamily,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
+    }
+
+}
+
+@Composable
+fun WeatherData(state: WeatherState, modifier: Modifier = Modifier) {
+    state.weatherInfo?.currentWeatherData?.let { data ->
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Image(
+                painter = painterResource(id = data.weatherType.iconRes),
+                contentDescription = null,
+                modifier = Modifier.size(150.dp)
+            )
+            Column() {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    WeatherDataDetail(
+                        value = data.windSpeed.roundToInt(),
+                        unit = "Kmh",
+                        icon = ImageVector.vectorResource(id = R.drawable.wind_icon),
+                        desc = "Wind"
+                    )
+                    WeatherDataDetail(
+                        value = data.humidity.roundToInt(),
+                        unit = "%",
+                        icon = ImageVector.vectorResource(id = R.drawable.humidity_icon),
+                        desc = "Humidity"
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    WeatherDataDetail(
+                        value = data.pressure.roundToInt(),
+                        unit = "hpa",
+                        icon = ImageVector.vectorResource(id = R.drawable.wind_pressure),
+                        desc = "Pressure"
+                    )
+                    WeatherDataDetail(
+                        value = data.temperatureCelsius.roundToInt(),
+                        unit = "°C",
+                        icon = ImageVector.vectorResource(id = R.drawable.temp_icon),
+                        desc = "Temp"
+                    )
+                }
+            }
+
+        }
+    }
+
+}
+
+@Composable
+fun Greetings(state: WeatherState, name: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,6 +145,11 @@ fun Greetings() {
             .background(Color(0XFFF4DFBA))
             .padding(16.dp)
     ) {
+        if (state.isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
         Text(
             text = "Today Details",
             fontSize = 12.sp,
@@ -56,36 +157,7 @@ fun Greetings() {
             fontWeight = FontWeight.Medium,
             fontFamily = poppinsFontFamily,
         )
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-            Image(
-                painter = painterResource(id = R.drawable.weather_example),
-                contentDescription = null,
-                Modifier.size(140.dp)
-            )
-            Column {
-                Row {
-                    Icon(
-                        painter = painterResource(id = R.drawable.wind_icon),
-                        contentDescription = null
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.humidity_icon),
-                        contentDescription = null
-                    )
-                }
-                Row {
-                    Icon(
-                        painter = painterResource(id = R.drawable.uv_icon),
-                        contentDescription = null
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.temp_icon),
-                        contentDescription = null
-                    )
-                }
-
-            }
-        }
+        WeatherData(state = state)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -94,7 +166,7 @@ fun Greetings() {
 
             Column {
                 Text(
-                    text = "Halo, Sobat RashIO",
+                    text = "Halo, ${name}",
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.SemiBold,
