@@ -1,6 +1,5 @@
 package id.rashio.android
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +16,6 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     val authState = tokenPreference.userData.map { userData ->
-        Log.d("Testing", "Testing Login:$userData ")
         if (userData.token.isEmpty()) {
             AuthenticationState.Unauthenticated
         } else {
