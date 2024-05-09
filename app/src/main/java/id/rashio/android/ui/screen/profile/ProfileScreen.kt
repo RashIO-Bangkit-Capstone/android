@@ -12,7 +12,7 @@ import id.rashio.android.ui.components.BottomNavBar
 import id.rashio.android.ui.components.BottomNavigationItem
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun ProfileScreen(navController: NavController) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
         bottomBar = {
             BottomNavBar(

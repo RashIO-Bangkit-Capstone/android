@@ -22,10 +22,10 @@ fun BottomNavBar(
     var selectedIndex = items.indexOfFirst { it.route == currentDestination?.route }
 
 
-    NavigationBar{
+    NavigationBar {
         items.forEachIndexed { index, bottomNavigationItem ->
             NavigationBarItem(
-                selected = currentDestination?.hierarchy?.any { it.route ==  bottomNavigationItem.route} == true,
+                selected = currentDestination?.hierarchy?.any { it.route == bottomNavigationItem.route } == true,
                 onClick = {
                     selectedIndex = index
                     navController.navigate(bottomNavigationItem.route) {
@@ -45,7 +45,8 @@ fun BottomNavBar(
                         imageVector = if (index == selectedIndex) {
                             bottomNavigationItem.selectedIcon
                         } else bottomNavigationItem.unselectedIcon,
-                        contentDescription = bottomNavigationItem.title)
+                        contentDescription = bottomNavigationItem.title
+                    )
                 },
                 label = { Text(text = bottomNavigationItem.title) },
                 alwaysShowLabel = true

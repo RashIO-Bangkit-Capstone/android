@@ -14,8 +14,8 @@ data class BottomNavigationItem(
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
     val route: String,
-    ) {
-    companion object{
+) {
+    companion object {
         fun getMenuBottomItems() = mutableListOf<BottomNavigationItem>(
             BottomNavigationItem(
                 title = "Home",

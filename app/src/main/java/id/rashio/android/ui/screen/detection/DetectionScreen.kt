@@ -14,14 +14,16 @@ import id.rashio.android.ui.components.BottomNavigationItem
 @Composable
 fun DetectionScreen(modifier: Modifier = Modifier, navController: NavController) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
-    bottomBar = {
-        BottomNavBar(
-            navController = navController,
-            items = BottomNavigationItem.getMenuBottomItems()
-        )
-    }, content = { innerPadding ->
-        Column(modifier = androidx.compose.ui.Modifier.consumeWindowInsets(innerPadding)) {
-            Text(text = "Detection Screen")
-        }
-    })
+        bottomBar = {
+            BottomNavBar(
+                navController = navController,
+                items = BottomNavigationItem.getMenuBottomItems()
+            )
+        }, content = { innerPadding ->
+            Column(modifier = Modifier.consumeWindowInsets(innerPadding)) {
+
+                Text(text = "Detection Screen")
+            }
+        })
+
 }

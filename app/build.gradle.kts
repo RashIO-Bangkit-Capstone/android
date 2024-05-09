@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kaptKotlin)
     alias(libs.plugins.daggerHilt)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -77,6 +78,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    implementation (libs.converter.moshi)
+
 
     //    Hilt
     implementation(libs.hilt.android)
@@ -85,5 +88,23 @@ dependencies {
 
     //    DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    // Coil
+    implementation(libs.coil.compose)
+
+    // Location Service
+    implementation (libs.play.services.location)
+
+    // Accompaniest
+    implementation (libs.accompanist.permissions)
+
+    // Room
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.room.compiler)
+
+
 
 }

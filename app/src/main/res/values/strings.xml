@@ -13,4 +13,8 @@
     <string name="no_hp">No. HP</string>
     <string name="login_button_desc">Sudah punya akun?</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="articles">Articles</string>
+    <string name="identify_skin">Identify Skin Type</string>
+    <string name="detection_history">Detection History</string>
+    <string name="derma">Nearest Derma</string>
 </resources>

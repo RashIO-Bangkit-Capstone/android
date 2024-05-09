@@ -20,19 +20,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import id.rashio.android.R
 import id.rashio.android.ui.theme.poppinsFontFamily
 
 
 @Composable
-fun SplashScreen(navController: NavController) {
+fun SplashScreen() {
 
-//    LaunchedEffect(key1 = true) {
-//        delay(2000)
-//        navController.popBackStack()
-//        navController.navigate("Login")
-//    }
     val linear = Brush.linearGradient(
         listOf(
             Color(0XFFF9F9F9), Color(0XFFCA965C)
