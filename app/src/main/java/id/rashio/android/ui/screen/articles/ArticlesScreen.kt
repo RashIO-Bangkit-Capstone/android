@@ -8,18 +8,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import id.rashio.android.ui.components.BottomNavBar
-import id.rashio.android.ui.components.BottomNavigationItem
 
 @Composable
 fun ArticlesScreen(modifier: Modifier = Modifier, navController: NavController) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
-        bottomBar = {
-            BottomNavBar(
-                navController = navController,
-                items = BottomNavigationItem.getMenuBottomItems()
-            )
-        }, content = { innerPadding ->
+        content = { innerPadding ->
             Column(modifier = Modifier.consumeWindowInsets(innerPadding)) {
 
                 Text(text = "Articles Screen")

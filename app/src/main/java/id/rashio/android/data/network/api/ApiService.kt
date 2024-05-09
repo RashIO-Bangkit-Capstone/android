@@ -3,12 +3,14 @@ package id.rashio.android.data.network.api
 import id.rashio.android.data.network.request.LoginRequest
 import id.rashio.android.data.network.request.RegisterRequest
 import id.rashio.android.data.network.response.ArticleResponse
+import id.rashio.android.data.network.response.ArticlesResponse
 import id.rashio.android.data.network.response.LoginResponse
 import id.rashio.android.data.network.response.RegisterResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -27,5 +29,12 @@ interface ApiService {
     @GET("/v1/articles")
     suspend fun getArticles(
         @Header("Content-Type") contentType: String = "application/json"
+    ): Result<ArticlesResponse>
+
+    @GET("/v1/articles/{id}")
+    suspend fun getArticleDetail(
+        @Path("id") id: String,
+        @Header("Content-Type") contentType: String = "application/json"
     ): Result<ArticleResponse>
+
 }

@@ -11,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import id.rashio.android.data.local.preferences.TokenPreference
 import id.rashio.android.data.local.preferences.tokenDataStore
+import id.rashio.android.data.local.room.ArticleDatabase
 import id.rashio.android.data.network.api.ApiConfig
 import id.rashio.android.data.network.api.ApiService
 import id.rashio.android.data.network.api.weather_api.WeatherAPI
@@ -47,5 +48,13 @@ object ApplicationModules {
     fun provideFusedLocationProviderClient(app: Application): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(app)
     }
+
+    @Provides
+    fun provideDatabaseArticle(@ApplicationContext context: Context): ArticleDatabase {
+        return ArticleDatabase.getDatabase(context)
+    }
+
+    @Provides
+    fun provideDaoArticle(database: ArticleDatabase) = database.bookmarkArticleDao()
 
 }

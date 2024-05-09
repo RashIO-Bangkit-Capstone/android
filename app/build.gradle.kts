@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kaptKotlin)
     alias(libs.plugins.daggerHilt)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -96,6 +97,13 @@ dependencies {
 
     // Accompaniest
     implementation (libs.accompanist.permissions)
+
+    // Room
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.room.compiler)
 
 
 

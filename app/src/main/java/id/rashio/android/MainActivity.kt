@@ -1,5 +1,6 @@
 package id.rashio.android
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -17,12 +18,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import id.rashio.android.ui.screen.articles.ArticlesScreen
+import id.rashio.android.ui.screen.articles.article_detail.ArticleDetailScreen
 import id.rashio.android.ui.screen.auth.login.LoginScreen
 import id.rashio.android.ui.screen.auth.register.RegisterScreen
 import id.rashio.android.ui.screen.detection.DetectionScreen
@@ -75,7 +78,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = "Splash",
                     ) {
                         composable("Splash") {
-                            SplashScreen(navController = navController)
+                            SplashScreen()
                         }
                         composable("Login",
                             enterTransition = {
@@ -125,7 +128,16 @@ class MainActivity : ComponentActivity() {
                             RegisterScreen(navigateBack = navController::navigateUp)
                         }
                         composable("Home") {
-                            HomeScreen(navController = navController)
+                            val context = LocalContext.current
+                            val activity = context as? Activity
+                            if (activity != null) {
+                                HomeScreen(
+                                    navController = navController,
+                                    activity = activity,
+                                    navigateToDetail = { articleId ->
+                                        navController.navigate("DetailArticle/$articleId")
+                                    })
+                            }
                         }
                         composable("Detection") {
                             DetectionScreen(navController = navController)
@@ -135,6 +147,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("Articles") {
                             ArticlesScreen(navController = navController)
+                        }
+                        composable("DetailArticle/{articleId}") {
+                            ArticleDetailScreen(navController = navController)
                         }
                     }
                 }

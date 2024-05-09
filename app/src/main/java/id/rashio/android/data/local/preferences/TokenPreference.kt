@@ -30,8 +30,13 @@ class TokenPreference private constructor(private val dataStore: DataStore<Prefe
         }
 
 
-
-    suspend fun saveUserData(name: String, email: String, phoneNumber: String, token: String, id: String){
+    suspend fun saveUserData(
+        name: String,
+        email: String,
+        phoneNumber: String,
+        token: String,
+        id: String
+    ) {
         dataStore.edit { preferences ->
             preferences[NAME_KEY] = name
             preferences[EMAIL_KEY] = email
@@ -55,7 +60,7 @@ class TokenPreference private constructor(private val dataStore: DataStore<Prefe
     }
 }
 
-data class UserData (
+data class UserData(
     val name: String,
     val email: String,
     val phoneNumber: String,

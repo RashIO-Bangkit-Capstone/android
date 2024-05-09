@@ -1,6 +1,9 @@
 package id.rashio.android.ui.screen.home
 
-import android.util.Log
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,14 +28,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.SettingsClient
 import id.rashio.android.data.model.listFeatures
-import id.rashio.android.ui.components.BannerHome
 import id.rashio.android.ui.components.BottomNavBar
 import id.rashio.android.ui.components.BottomNavigationItem
-import id.rashio.android.ui.components.Greetings
-import id.rashio.android.ui.components.HeadingText
-import id.rashio.android.ui.components.ItemArticle
-import id.rashio.android.ui.components.ItemFeature
+import id.rashio.android.ui.components.home.ArticleCard
+import id.rashio.android.ui.components.home.BannerHome
+import id.rashio.android.ui.components.home.Greetings
+import id.rashio.android.ui.components.home.HeadingText
+import id.rashio.android.ui.components.home.ItemFeature
 
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -40,7 +48,9 @@ import id.rashio.android.ui.components.ItemFeature
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    activity: Activity,
+    navigateToDetail: (Int) -> Unit
 ) {
     val articles by viewModel.articles.collectAsState()
     val userData by viewModel.userData.collectAsState()
@@ -53,21 +63,45 @@ fun HomeScreen(
     )
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val locationRequest = LocationRequest.create().apply {
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    }
+    val settingsClient: SettingsClient = LocationServices.getSettingsClient(activity)
+    val builder = LocationSettingsRequest.Builder()
+        .addLocationRequest(locationRequest)
+
+    val startForResult =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                viewModel.loadWeatherInfo()
+            }
+        }
+
     LaunchedEffect(key1 = Unit) {
         accessLocation.launchMultiplePermissionRequest()
     }
 
     LaunchedEffect(key1 = accessLocation) {
-
-        if(accessLocation.allPermissionsGranted){
-            viewModel.loadWeatherInfo()
-            Log.d("Load Weather", "Test load weather")
-        } else{
-          snackbarHostState.showSnackbar("Location permissions not granted")
+        if (accessLocation.allPermissionsGranted) {
+            val task = settingsClient.checkLocationSettings(builder.build())
+            task.addOnSuccessListener {
+                viewModel.loadWeatherInfo()
+            }
+            task.addOnFailureListener { exception ->
+                if (exception is ResolvableApiException) {
+                    startForResult.launch(
+                        IntentSenderRequest.Builder(exception.resolution.intentSender).build()
+                    )
+                }
+            }
+        } else {
+            snackbarHostState.showSnackbar("Location permissions not granted")
         }
     }
+
+
     Scaffold(modifier = Modifier.fillMaxWidth(),
-        snackbarHost = { SnackbarHost(snackbarHostState)},
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             BottomNavBar(
                 navController = navController,
@@ -78,31 +112,34 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(innerPadding)
                     .verticalScroll(state = rememberScrollState())
-                    .background(Color.White)) {
-                        Greetings(viewModel.state, userData.name)
-                        BannerHome()
-                        LazyRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = modifier.padding(16.dp)
-                        ) {
-                            items(listFeatures, key = { it.textFeature }) { feature ->
-                                ItemFeature(
-                                    image = feature.imageFeature,
-                                    text = feature.textFeature,
-                                    destination = feature.destination,
-                                    navController = navController
-                                )
-                            }
-                        }
-                        HeadingText(text = "Artikel Terkini")
-                        repeat(articles.size) {
-                            val article = articles[it]
-                            ItemArticle(
-                                title = article.title,
-                                imageUrl = article.imageUrl,
-                                author = article.author,
-                            )
-                        }
+                    .background(Color.White)
+            ) {
+                Greetings(viewModel.state, userData.name)
+                BannerHome()
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = modifier.padding(16.dp)
+                ) {
+                    items(listFeatures, key = { it.textFeature }) { feature ->
+                        ItemFeature(
+                            image = feature.imageFeature,
+                            text = feature.textFeature,
+                            destination = feature.destination,
+                            navController = navController
+                        )
                     }
+                }
+                HeadingText(text = "Artikel Terkini")
+                repeat(articles.size) {
+                    val article = articles[it]
+                    ArticleCard(
+                        bookmarkableArticle = article,
+                        onBookmarkClick = viewModel::bookmarkArticle,
+                        onArticleClick = {
+                            navigateToDetail(article.articleId)
+                        }
+                    )
+                }
+            }
         })
 }

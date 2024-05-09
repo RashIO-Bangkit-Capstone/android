@@ -2,13 +2,13 @@ package id.rashio.android.data.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ArticleResponse(
+data class ArticlesResponse(
 
     @field:SerializedName("code")
     val code: Int,
 
     @field:SerializedName("data")
-    val articleData: ArticleData,
+    val data: List<ArticlesDataItem>,
 
     @field:SerializedName("message")
     val message: String,
@@ -17,16 +17,10 @@ data class ArticleResponse(
     val status: String
 )
 
-data class ArticleData(
-
-    @field:SerializedName("createdAt")
-    val createdAt: String,
+data class ArticlesDataItem(
 
     @field:SerializedName("author")
     val author: String,
-
-    @field:SerializedName("bodies")
-    val bodies: List<String>,
 
     @field:SerializedName("imageUrl")
     val imageUrl: String,
@@ -42,8 +36,5 @@ data class ArticleData(
 
     @field:SerializedName("referenceUrl")
     val referenceUrl: String
-) {
-    companion object {
-        fun empty() = ArticleData("", "", emptyList(), "", 0, "", "", "")
-    }
-}
+)
+

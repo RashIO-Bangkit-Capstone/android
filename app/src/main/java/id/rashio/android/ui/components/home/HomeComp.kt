@@ -1,4 +1,4 @@
-package id.rashio.android.ui.components
+package id.rashio.android.ui.components.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,11 +15,13 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import id.rashio.android.R
+import id.rashio.android.data.model.BookmarkableArticle
 import id.rashio.android.ui.screen.home.WeatherState
 import id.rashio.android.ui.theme.poppinsFontFamily
 import kotlin.math.roundToInt
@@ -54,28 +58,23 @@ fun WeatherDataDetail(
     iconTint: Color = MaterialTheme.colorScheme.primary
 ) {
 
-    Row(modifier = Modifier.padding(12.dp)) {
+    Row(horizontalArrangement = Arrangement.Start, modifier = modifier) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             tint = iconTint,
-            modifier = Modifier.size(20.dp)
+            modifier = Modifier
         )
-        Column(modifier = Modifier.padding(start = 4.dp)) {
-            Text(
-                text = "$value $unit",
-                fontWeight = FontWeight.Medium,
-                fontFamily = poppinsFontFamily,
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 10.sp
-            )
-            Text(
-                text = desc,
-                fontSize = 10.sp,
-                fontFamily = poppinsFontFamily,
-                color = MaterialTheme.colorScheme.primary,
-            )
-        }
+        Text(
+            text = "$value $unit\n$desc",
+            fontWeight = FontWeight.Medium,
+            fontFamily = poppinsFontFamily,
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 10.sp,
+            lineHeight = 11.sp,
+            modifier = Modifier.padding(start = 4.dp)
+        )
+
     }
 
 }
@@ -87,17 +86,20 @@ fun WeatherData(state: WeatherState, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = data.weatherType.iconRes),
-                contentDescription = null,
-                modifier = Modifier.size(150.dp)
-            )
-            Column() {
+            Column {
+                Image(
+                    painter = painterResource(id = data.weatherType.iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.size(135.dp)
+                )
+            }
+            Column {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.widthIn(60.dp),
                 ) {
                     WeatherDataDetail(
                         value = data.windSpeed.roundToInt(),
@@ -105,6 +107,7 @@ fun WeatherData(state: WeatherState, modifier: Modifier = Modifier) {
                         icon = ImageVector.vectorResource(id = R.drawable.wind_icon),
                         desc = "Wind"
                     )
+                    Spacer(modifier = Modifier.size(24.dp))
                     WeatherDataDetail(
                         value = data.humidity.roundToInt(),
                         unit = "%",
@@ -112,21 +115,24 @@ fun WeatherData(state: WeatherState, modifier: Modifier = Modifier) {
                         desc = "Humidity"
                     )
                 }
+                Spacer(modifier = Modifier.size(16.dp))
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.widthIn(60.dp)
                 ) {
-                    WeatherDataDetail(
-                        value = data.pressure.roundToInt(),
-                        unit = "hpa",
-                        icon = ImageVector.vectorResource(id = R.drawable.wind_pressure),
-                        desc = "Pressure"
-                    )
                     WeatherDataDetail(
                         value = data.temperatureCelsius.roundToInt(),
                         unit = "°C",
                         icon = ImageVector.vectorResource(id = R.drawable.temp_icon),
                         desc = "Temp"
+                    )
+                    Spacer(modifier = Modifier.size(24.dp))
+
+                    WeatherDataDetail(
+                        value = data.pressure.roundToInt(),
+                        unit = "hpa",
+                        icon = ImageVector.vectorResource(id = R.drawable.wind_pressure),
+                        desc = "Pressure"
                     )
                 }
             }
@@ -149,15 +155,16 @@ fun Greetings(state: WeatherState, name: String) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
+        } else {
+            Text(
+                text = "Today Details",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Medium,
+                fontFamily = poppinsFontFamily,
+            )
+            WeatherData(state = state)
         }
-        Text(
-            text = "Today Details",
-            fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Medium,
-            fontFamily = poppinsFontFamily,
-        )
-        WeatherData(state = state)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -295,32 +302,42 @@ fun HeadingText(text: String) {
 }
 
 @Composable
-fun ItemArticle(title: String, author: String, imageUrl: String) {
+fun ArticleCard(
+    bookmarkableArticle: BookmarkableArticle,
+    onBookmarkClick: (BookmarkableArticle) -> Unit,
+    onArticleClick: (Int) -> Unit
+) {
 
     Card(
         modifier = Modifier
+            .clickable { onArticleClick(bookmarkableArticle.articleId) }
             .fillMaxWidth()
             .padding(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
     ) {
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
             AsyncImage(
-                model = imageUrl,
+                model = bookmarkableArticle.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(90.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .weight(1f)
             )
-            Column(modifier = Modifier.weight(2f)) {
+            Column(
+                modifier = Modifier
+                    .weight(2f)
+                    .padding(start = 8.dp)
+            ) {
                 Text(
-                    text = title,
+                    text = bookmarkableArticle.title,
                     color = Color.Black,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.SemiBold,
                     fontFamily = poppinsFontFamily,
                     fontSize = 12.sp,
+                    textAlign = TextAlign.Start,
                     modifier = Modifier.padding(start = 8.dp)
                 )
                 Row {
@@ -333,7 +350,7 @@ fun ItemArticle(title: String, author: String, imageUrl: String) {
                         modifier = Modifier.padding(start = 8.dp),
                     )
                     Text(
-                        text = author,
+                        text = bookmarkableArticle.author,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Normal,
                         fontFamily = poppinsFontFamily,
@@ -343,19 +360,24 @@ fun ItemArticle(title: String, author: String, imageUrl: String) {
                     )
                 }
             }
-//            Icons.Outlined.BookmarkBorder
-//            Image(
-//                painter = painterResource(),
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .scale(2)
-//                    .weight(1f)
-//            )
-            Image(
-                painter = painterResource(id = R.drawable.baseline_bookmark_border_24),
-                contentDescription = null,
-                modifier = Modifier.weight(1f)
-            )
+            IconButton(onClick = { onBookmarkClick(bookmarkableArticle) }) {
+                if (bookmarkableArticle.isBookmarked) {
+                    Icon(
+                        painter = painterResource(R.drawable.baseline_bookmark_24),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_bookmark_border_24),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+            }
+
+
         }
 
 
