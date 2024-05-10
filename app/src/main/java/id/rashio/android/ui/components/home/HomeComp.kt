@@ -290,16 +290,6 @@ fun ItemFeature(image: Int, text: Int, destination: String, navController: NavCo
     }
 }
 
-@Composable
-fun HeadingText(text: String) {
-    Text(
-        text = text,
-        color = MaterialTheme.colorScheme.primary,
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp,
-        modifier = Modifier.padding(16.dp)
-    )
-}
 
 @Composable
 fun ArticleCard(

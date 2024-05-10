@@ -97,6 +97,7 @@ dependencies {
 
     // Accompaniest
     implementation (libs.accompanist.permissions)
+    implementation(libs.accompanist.flowlayout)
 
     // Room
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -105,6 +106,8 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     kapt(libs.room.compiler)
 
+    // Lottie
+    implementation (libs.lottie)
 
 
 }
