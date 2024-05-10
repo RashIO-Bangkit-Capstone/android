@@ -13,7 +13,7 @@ import java.util.Base64
 import javax.inject.Inject
 
 
-sealed class LoginUiState() {
+sealed class LoginUiState {
     data object Loading : LoginUiState()
     data class Success(val authenticated: Boolean = false) : LoginUiState()
     data class Error(val message: String) : LoginUiState()

@@ -14,7 +14,7 @@ import id.rashio.android.ui.components.TopBarComp
 @Composable
 fun IdentifyScreem(
     navController: NavController,
-    ) {
+) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
         topBar = {
             TopBarComp(

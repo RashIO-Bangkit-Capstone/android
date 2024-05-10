@@ -246,7 +246,7 @@ fun BannerHome() {
 }
 
 @Composable
-fun ItemFeature(image: Int, text: Int, onClick:  () -> Unit) {
+fun ItemFeature(image: Int, text: Int, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(width = 88.dp, height = 90.dp)

@@ -40,7 +40,7 @@ import id.rashio.android.ui.theme.AppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         setContent {
             AppTheme {
                 // A surface container using the 'background' color from the theme
@@ -171,7 +171,7 @@ class MainActivity : ComponentActivity() {
                             IdentifyScreem(navController = navController)
                         }
                         composable("History") {
-                             DetectionHistoryScreen(navController = navController)
+                            DetectionHistoryScreen(navController = navController)
                         }
                     }
                 }
