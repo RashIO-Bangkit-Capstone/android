@@ -40,7 +40,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import id.rashio.android.R
 import id.rashio.android.data.model.BookmarkableArticle
@@ -247,7 +246,7 @@ fun BannerHome() {
 }
 
 @Composable
-fun ItemFeature(image: Int, text: Int, destination: String, navController: NavController) {
+fun ItemFeature(image: Int, text: Int, onClick:  () -> Unit) {
     Box(
         modifier = Modifier
             .size(width = 88.dp, height = 90.dp)
@@ -259,7 +258,7 @@ fun ItemFeature(image: Int, text: Int, destination: String, navController: NavCo
             )
             .background(Color(0XFFFCF5E7))
             .padding(8.dp)
-            .clickable { navController.navigate(destination) }
+            .clickable { onClick() }
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

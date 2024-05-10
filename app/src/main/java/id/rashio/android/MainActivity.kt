@@ -30,7 +30,9 @@ import id.rashio.android.ui.screen.auth.login.LoginScreen
 import id.rashio.android.ui.screen.auth.register.RegisterScreen
 import id.rashio.android.ui.screen.detection.DetectionScreen
 import id.rashio.android.ui.screen.home.HomeScreen
+import id.rashio.android.ui.screen.identify.IdentifyScreem
 import id.rashio.android.ui.screen.profile.ProfileScreen
+import id.rashio.android.ui.screen.profile.detection_history.DetectionHistoryScreen
 import id.rashio.android.ui.screen.splash_screen.SplashScreen
 import id.rashio.android.ui.theme.AppTheme
 
@@ -136,7 +138,17 @@ class MainActivity : ComponentActivity() {
                                     activity = activity,
                                     navigateToDetail = { articleId ->
                                         navController.navigate("DetailArticle/$articleId")
-                                    })
+                                    },
+                                    navigateToIdentify = {
+                                        navController.navigate("IdentifySkin")
+                                    },
+                                    navigateToArticle = {
+                                        navController.navigate("Articles")
+                                    },
+                                    navigateToHistory = {
+                                        navController.navigate("History")
+                                    }
+                                )
                             }
                         }
                         composable("Detection") {
@@ -154,6 +166,12 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("DetailArticle/{articleId}") {
                             ArticleDetailScreen(navController = navController)
+                        }
+                        composable("IdentifySkin") {
+                            IdentifyScreem(navController = navController)
+                        }
+                        composable("History") {
+                             DetectionHistoryScreen(navController = navController)
                         }
                     }
                 }

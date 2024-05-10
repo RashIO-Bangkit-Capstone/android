@@ -6,10 +6,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
@@ -30,7 +29,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.SettingsClient
-import id.rashio.android.data.model.listFeatures
+import id.rashio.android.R
 import id.rashio.android.ui.components.BottomNavBar
 import id.rashio.android.ui.components.BottomNavigationItem
 import id.rashio.android.ui.components.HeadingText
@@ -39,7 +38,6 @@ import id.rashio.android.ui.components.home.BannerHome
 import id.rashio.android.ui.components.home.Greetings
 import id.rashio.android.ui.components.home.ItemFeature
 
-
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
@@ -47,7 +45,10 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel(),
     activity: Activity,
-    navigateToDetail: (Int) -> Unit
+    navigateToDetail: (Int) -> Unit,
+    navigateToIdentify: () -> Unit,
+    navigateToArticle: () -> Unit,
+    navigateToHistory: () -> Unit
 ) {
     val articles by viewModel.articles.collectAsState()
     val userData by viewModel.userData.collectAsState()
@@ -101,18 +102,36 @@ fun HomeScreen(
             ) {
                 Greetings(viewModel.state, userData.name)
                 BannerHome()
-                LazyRow(
+                Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = modifier.padding(16.dp)
-                ) {
-                    items(listFeatures, key = { it.textFeature }) { feature ->
-                        ItemFeature(
-                            image = feature.imageFeature,
-                            text = feature.textFeature,
-                            destination = feature.destination,
-                            navController = navController
-                        )
-                    }
+                )
+                {
+                    ItemFeature(
+                        image = R.drawable.identify_skin_icon,
+                        text = R.string.identify_skin,
+                        onClick = {
+                            navigateToIdentify()
+                        })
+                    ItemFeature(
+                        image = R.drawable.articles_icon,
+                        text = R.string.articles,
+                        onClick = {
+                            navigateToArticle()
+                        })
+                    ItemFeature(
+                        image = R.drawable.detection_history_icon,
+                        text = R.string.detection_history,
+                        onClick = {
+                            navigateToHistory()
+                        })
+                    ItemFeature(
+                        image = R.drawable.derma_icon,
+                        text = R.string.derma,
+                        onClick = {
+                            // TODO()
+                        }
+                    )
                 }
                 HeadingText(text = "Artikel Terkini", modifier = Modifier.padding(16.dp))
                 repeat(articles.size) {
