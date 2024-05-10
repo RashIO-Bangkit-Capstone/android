@@ -78,7 +78,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    fun checkLocationSettings(
+        fun checkLocationSettings(
         settingsClient: SettingsClient,
         locationRequest: LocationRequest,
         startForResult: (IntentSenderRequest) -> Unit
@@ -98,17 +98,18 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    val articles = articleRepository.getArticlesHome()
-        .stateIn(
+        val articles = articleRepository.getArticlesHome()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
+                initialValue = emptyList()
+            )
+
+
+        val userData = tokenPreference.userData.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-            initialValue = emptyList()
+            initialValue = UserData(name = "", email = "", phoneNumber = "", token = "", id = "")
         )
-
-
-    val userData = tokenPreference.userData.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-        initialValue = UserData(name = "", email = "", phoneNumber = "", token = "", id = "")
-    )
 }
+
