@@ -1,4 +1,4 @@
-package id.rashio.android.ui.components.article_detail
+package id.rashio.android.ui.components.articles.article_detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

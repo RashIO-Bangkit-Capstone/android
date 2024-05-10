@@ -146,7 +146,11 @@ class MainActivity : ComponentActivity() {
                             ProfileScreen(navController = navController)
                         }
                         composable("Articles") {
-                            ArticlesScreen(navController = navController)
+                            ArticlesScreen(
+                                navController = navController,
+                                navigateToDetail = { articleId ->
+                                    navController.navigate("DetailArticle/$articleId")
+                                })
                         }
                         composable("DetailArticle/{articleId}") {
                             ArticleDetailScreen(navController = navController)

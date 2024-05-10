@@ -20,9 +20,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import id.rashio.android.R
 import id.rashio.android.ui.components.TopBarComp
-import id.rashio.android.ui.components.article_detail.ArticleInfo
-import id.rashio.android.ui.components.article_detail.BannerArticle
-import id.rashio.android.ui.components.article_detail.BodyArticle
+import id.rashio.android.ui.components.articles.article_detail.ArticleInfo
+import id.rashio.android.ui.components.articles.article_detail.BannerArticle
+import id.rashio.android.ui.components.articles.article_detail.BodyArticle
 
 @Composable
 fun ArticleDetailScreen(

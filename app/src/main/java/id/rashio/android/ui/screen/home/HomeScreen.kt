@@ -36,10 +36,10 @@ import com.google.android.gms.location.SettingsClient
 import id.rashio.android.data.model.listFeatures
 import id.rashio.android.ui.components.BottomNavBar
 import id.rashio.android.ui.components.BottomNavigationItem
+import id.rashio.android.ui.components.HeadingText
 import id.rashio.android.ui.components.home.ArticleCard
 import id.rashio.android.ui.components.home.BannerHome
 import id.rashio.android.ui.components.home.Greetings
-import id.rashio.android.ui.components.home.HeadingText
 import id.rashio.android.ui.components.home.ItemFeature
 
 
@@ -129,7 +129,7 @@ fun HomeScreen(
                         )
                     }
                 }
-                HeadingText(text = "Artikel Terkini")
+                HeadingText(text = "Artikel Terkini", modifier= Modifier.padding(16.dp))
                 repeat(articles.size) {
                     val article = articles[it]
                     ArticleCard(
