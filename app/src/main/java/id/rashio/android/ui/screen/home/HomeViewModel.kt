@@ -1,10 +1,15 @@
 package id.rashio.android.ui.screen.home
 
+import androidx.activity.result.IntentSenderRequest
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.SettingsClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.rashio.android.data.local.preferences.TokenPreference
 import id.rashio.android.data.local.preferences.UserData
@@ -26,6 +31,7 @@ class HomeViewModel @Inject constructor(
     private val locationTracker: LocationTracker,
     private val tokenPreference: TokenPreference,
 ) : ViewModel() {
+
 
     var state by mutableStateOf(WeatherState())
         private set
@@ -68,6 +74,27 @@ class HomeViewModel @Inject constructor(
     fun bookmarkArticle(bookmarkableArticle: BookmarkableArticle) {
         viewModelScope.launch {
             articleRepository.bookmarkArticle(bookmarkableArticle)
+        }
+    }
+
+
+    fun checkLocationSettings(
+        settingsClient: SettingsClient,
+        locationRequest: LocationRequest,
+        startForResult: (IntentSenderRequest) -> Unit
+    ) {
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+        val task = settingsClient.checkLocationSettings(builder.build())
+        task.addOnSuccessListener {
+            loadWeatherInfo()
+        }
+        task.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                startForResult(
+                    IntentSenderRequest.Builder(exception.resolution.intentSender).build()
+                )
+            }
         }
     }
 
