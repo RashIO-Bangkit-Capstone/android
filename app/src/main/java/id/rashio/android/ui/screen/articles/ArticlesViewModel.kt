@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ArticlesViewModel @Inject constructor(
     private val articleRepository: ArticleRepository
-): ViewModel(){
+) : ViewModel() {
 
     val articles = articleRepository.getArticles()
         .stateIn(
