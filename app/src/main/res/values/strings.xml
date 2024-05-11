@@ -17,4 +17,8 @@
     <string name="identify_skin">Identify Skin Type</string>
     <string name="detection_history">Detection History</string>
     <string name="derma">Nearest Derma</string>
+    <string name="desc_detection_inst">Masukkan gambar yang ingin anda deteksi</string>
+    <string name="galeri">Galeri</string>
+    <string name="camera">Camera</string>
+    <string name="mulai_deteksi">Mulai Deteksi</string>
 </resources>
