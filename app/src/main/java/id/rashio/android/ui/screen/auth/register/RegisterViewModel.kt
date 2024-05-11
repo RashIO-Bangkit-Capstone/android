@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class RegisterUiState() {
+sealed class RegisterUiState {
     data object Loading : RegisterUiState()
     data class Success(val authenticated: Boolean = false) : RegisterUiState()
     data class Error(val message: String) : RegisterUiState()
