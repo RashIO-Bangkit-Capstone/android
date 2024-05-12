@@ -1,5 +1,6 @@
 package id.rashio.android.ui.screen.auth.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +30,7 @@ class LoginViewModel @Inject constructor(
         authenticationRepository.login(email, password)
             .onSuccess { response ->
                 val token = response.data.accessToken
+                val refreshToken = response.data.refreshToken
                 val body = token.split(".").get(1)
                 val decoded = Base64.getDecoder().decode(body)
                 val jsonObject = JSONObject(String(decoded))
@@ -40,9 +42,10 @@ class LoginViewModel @Inject constructor(
                     email = email,
                     phoneNumber = phoneNumber,
                     token = token,
-                    id = id
-
+                    id = id,
+                    refreshToken = refreshToken
                 )
+                Log.d("Refresh Token", "login: test Refresh token : $refreshToken")
                 _uiState.value = LoginUiState.Success(authenticated = true)
             }
             .onFailure { e ->
