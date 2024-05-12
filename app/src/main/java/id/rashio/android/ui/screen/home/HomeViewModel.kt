@@ -109,7 +109,14 @@ class HomeViewModel @Inject constructor(
     val userData = tokenPreference.userData.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-        initialValue = UserData(name = "", email = "", phoneNumber = "", token = "", id = "")
+        initialValue = UserData(
+            name = "",
+            email = "",
+            phoneNumber = "",
+            token = "",
+            id = "",
+            refreshToken = ""
+        )
     )
 }
 

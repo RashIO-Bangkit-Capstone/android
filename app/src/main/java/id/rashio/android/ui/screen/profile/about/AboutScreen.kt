@@ -1,4 +1,4 @@
-package id.rashio.android.ui.screen.profile.detection_history
+package id.rashio.android.ui.screen.profile.about
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,13 +11,11 @@ import androidx.navigation.NavController
 import id.rashio.android.ui.components.TopBarComp
 
 @Composable
-fun DetectionHistoryScreen(
-    navController: NavController,
-) {
+fun AboutScreen(navController: NavController) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
         topBar = {
             TopBarComp(
-                title = "Detection History",
+                title = "Tentang Aplikasi",
                 onBackClick = { navController.popBackStack() })
         },
         content = { innerPadding ->
@@ -25,7 +23,7 @@ fun DetectionHistoryScreen(
                 modifier = Modifier
                     .padding(innerPadding)
             ) {
-                Text(text = "History Detection")
+                Text(text = "Tentang Aplikasi RashIO")
             }
         })
 

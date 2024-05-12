@@ -17,6 +17,7 @@ class TokenPreference private constructor(private val dataStore: DataStore<Prefe
     private val EMAIL_KEY = stringPreferencesKey("email")
     private val PHONE_KEY = stringPreferencesKey("phone")
     private val ID_KEY = stringPreferencesKey("id")
+    private val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
 
     val userData = dataStore.data
         .map { preferences ->
@@ -25,7 +26,8 @@ class TokenPreference private constructor(private val dataStore: DataStore<Prefe
                 email = preferences[EMAIL_KEY] ?: "",
                 phoneNumber = preferences[PHONE_KEY] ?: "",
                 token = preferences[TOKEN_KEY] ?: "",
-                id = preferences[ID_KEY] ?: ""
+                id = preferences[ID_KEY] ?: "",
+                refreshToken = preferences[REFRESH_TOKEN] ?: ""
             )
         }
 
@@ -35,7 +37,8 @@ class TokenPreference private constructor(private val dataStore: DataStore<Prefe
         email: String,
         phoneNumber: String,
         token: String,
-        id: String
+        id: String,
+        refreshToken: String
     ) {
         dataStore.edit { preferences ->
             preferences[NAME_KEY] = name
@@ -43,6 +46,13 @@ class TokenPreference private constructor(private val dataStore: DataStore<Prefe
             preferences[PHONE_KEY] = phoneNumber
             preferences[TOKEN_KEY] = token
             preferences[ID_KEY] = id
+            preferences[REFRESH_TOKEN] = refreshToken
+        }
+    }
+
+    suspend fun clearUserData() {
+        dataStore.edit { preferences ->
+            preferences.clear()
         }
     }
 
@@ -65,5 +75,6 @@ data class UserData(
     val email: String,
     val phoneNumber: String,
     val token: String,
-    val id: String
+    val id: String,
+    val refreshToken: String
 )
