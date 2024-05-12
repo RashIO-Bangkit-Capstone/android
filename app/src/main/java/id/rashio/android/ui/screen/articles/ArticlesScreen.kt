@@ -117,18 +117,23 @@ fun ArticlesScreen(
                                 fontSize = 32.sp,
                                 fontWeight = FontWeight.Bold
                             )
-
                         }
                     } else {
-                        repeat(filteredArticles.size) {
-                            val article = filteredArticles[it]
-                            ArticleCard(
-                                bookmarkableArticle = article,
-                                onBookmarkClick = viewModel::bookmarkArticle,
-                                onArticleClick = {
-                                    navigateToDetail(article.articleId)
-                                }
-                            )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.White)
+                        ) {
+                            repeat(filteredArticles.size) {
+                                val article = filteredArticles[it]
+                                ArticleCard(
+                                    bookmarkableArticle = article,
+                                    onBookmarkClick = viewModel::bookmarkArticle,
+                                    onArticleClick = {
+                                        navigateToDetail(article.articleId)
+                                    }
+                                )
+                            }
                         }
                     }
 

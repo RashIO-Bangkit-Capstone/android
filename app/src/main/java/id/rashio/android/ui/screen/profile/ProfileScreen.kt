@@ -109,7 +109,6 @@ fun ProfileScreen(
                         .padding(24.dp)
                         .clickable {
                             navigateToBookmarkedArticles()
-
                         },
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start

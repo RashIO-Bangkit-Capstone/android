@@ -87,4 +87,21 @@ class ArticleRepository @Inject constructor(
             isBookmarked = articleDao.exists(it.id)
         )
     }
+
+    fun getBookmarkArticles(): Flow<List<BookmarkableArticle>> {
+        return articleDao.getAllArticleBookmark().map { articleEntities ->
+            articleEntities.map { entity ->
+                BookmarkableArticle(
+                    articleId = entity.articleId,
+                    title = entity.title,
+                    imageUrl = entity.imageUrl,
+                    author = entity.author,
+                    referenceUrl = entity.referenceUrl,
+                    category = entity.category,
+                    isBookmarked = true
+                )
+            }
+        }
+    }
+
 }
