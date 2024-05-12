@@ -20,10 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,21 +28,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import id.rashio.android.R
 import id.rashio.android.ui.components.BottomNavBar
 import id.rashio.android.ui.components.BottomNavigationItem
 import id.rashio.android.ui.components.TopBarComp
 
 @Composable
-fun DetectionScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun DetectionScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: DetectionViewModel = hiltViewModel()
+) {
 
-    var imageUri by remember { mutableStateOf<String?>(null) }
+    val selectImageLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            viewModel.selectImage(uri)
+        }
 
-    val selectImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        imageUri = uri.toString()
-    }
 
     Scaffold(modifier = Modifier.fillMaxWidth(),
         topBar = {
@@ -66,7 +67,10 @@ fun DetectionScreen(modifier: Modifier = Modifier, navController: NavController)
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    val painter = if (imageUri != null) rememberImagePainter(data = imageUri) else painterResource(id = R.drawable.baseline_crop_original_24)
+                    val painter =
+                        if (viewModel.imageUri != null) rememberAsyncImagePainter(model = viewModel.imageUri) else painterResource(
+                            id = R.drawable.baseline_crop_original_24
+                        )
                     Image(
                         painter = painter,
                         contentDescription = null,
@@ -90,7 +94,9 @@ fun DetectionScreen(modifier: Modifier = Modifier, navController: NavController)
                         Text(text = stringResource(R.string.galeri))
                     }
                     Button(
-                        onClick = { /*TODO*/ }, modifier = Modifier
+                        onClick = {
+
+                        }, modifier = Modifier
                             .padding(top = 8.dp)
                             .width(250.dp)
                             .border(1.dp, Color.Gray, shape = MaterialTheme.shapes.extraLarge),
@@ -102,10 +108,11 @@ fun DetectionScreen(modifier: Modifier = Modifier, navController: NavController)
                         Text(text = stringResource(R.string.camera))
                     }
 
-                    Spacer(modifier =Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.size(16.dp))
 
                     Button(
-                        onClick = { /*TODO*/ }, modifier = Modifier
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
                             .padding(top = 8.dp, bottom = 36.dp)
                             .width(250.dp),
                     ) {
