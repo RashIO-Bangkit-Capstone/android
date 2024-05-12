@@ -32,6 +32,8 @@ import id.rashio.android.ui.screen.detection.DetectionScreen
 import id.rashio.android.ui.screen.home.HomeScreen
 import id.rashio.android.ui.screen.identify.IdentifyScreem
 import id.rashio.android.ui.screen.profile.ProfileScreen
+import id.rashio.android.ui.screen.profile.about.AboutScreen
+import id.rashio.android.ui.screen.profile.bookmarked_articles.BookmarkedArticlesScreen
 import id.rashio.android.ui.screen.profile.detection_history.DetectionHistoryScreen
 import id.rashio.android.ui.screen.splash_screen.SplashScreen
 import id.rashio.android.ui.theme.AppTheme
@@ -155,7 +157,25 @@ class MainActivity : ComponentActivity() {
                             DetectionScreen(navController = navController)
                         }
                         composable("Profile") {
-                            ProfileScreen(navController = navController)
+                            ProfileScreen(
+                                navController = navController,
+                                navigateToHistory = {
+                                    navController.navigate("History")
+                                },
+                                navigateToBookmarkedArticles = {
+                                    navController.navigate("BookmarkedArticles")
+                                },
+                                navigateToAbout = {
+                                    navController.navigate("About")
+                                },
+                                navigateToLogin = {
+                                    navController.navigate("Login") {
+                                        popUpTo("Profile") {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
+                            )
                         }
                         composable("Articles") {
                             ArticlesScreen(
@@ -172,6 +192,12 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("History") {
                             DetectionHistoryScreen(navController = navController)
+                        }
+                        composable("BookmarkedArticles") {
+                            BookmarkedArticlesScreen(navController = navController)
+                        }
+                        composable("About") {
+                            AboutScreen(navController = navController)
                         }
                     }
                 }

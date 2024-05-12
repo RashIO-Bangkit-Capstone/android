@@ -2,6 +2,7 @@ package id.rashio.android.ui.screen.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import id.rashio.android.R
 import id.rashio.android.ui.components.BottomNavBar
@@ -34,13 +38,26 @@ import id.rashio.android.ui.components.TopBarComp
 import id.rashio.android.ui.theme.poppinsFontFamily
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(
+    navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel(),
+    navigateToBookmarkedArticles: () -> Unit,
+    navigateToHistory: () -> Unit,
+    navigateToAbout: () -> Unit,
+    navigateToLogin: () -> Unit
+) {
+
+    val userData by viewModel.userData.collectAsState()
+
     Scaffold(topBar = {
         TopBarComp(
             title = "Profile",
             onBackClick = { navController.popBackStack() },
             actions = listOf {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    viewModel.logout()
+                    navigateToLogin()
+                }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_logout),
                         contentDescription = null,
@@ -68,9 +85,9 @@ fun ProfileScreen(navController: NavController) {
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(text = "userRashIO", color = Color.Black, fontWeight = FontWeight.Bold)
-                Text(text = "email", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                Text(text = "0293482034823", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(text = userData.name, color = Color.Black, fontWeight = FontWeight.Bold)
+                Text(text = userData.email, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(text = userData.phoneNumber, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
 
             Spacer(
@@ -89,7 +106,11 @@ fun ProfileScreen(navController: NavController) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(24.dp),
+                        .padding(24.dp)
+                        .clickable {
+                            navigateToBookmarkedArticles()
+
+                        },
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
@@ -118,7 +139,10 @@ fun ProfileScreen(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp),
+                    .padding(24.dp)
+                    .clickable {
+                        navigateToHistory()
+                    },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
@@ -148,7 +172,10 @@ fun ProfileScreen(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp),
+                    .padding(24.dp)
+                    .clickable {
+                        navigateToAbout()
+                    },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
