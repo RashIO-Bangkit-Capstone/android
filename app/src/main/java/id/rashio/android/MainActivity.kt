@@ -194,7 +194,12 @@ class MainActivity : ComponentActivity() {
                             DetectionHistoryScreen(navController = navController)
                         }
                         composable("BookmarkedArticles") {
-                            BookmarkedArticlesScreen(navController = navController)
+                            BookmarkedArticlesScreen(
+                                navController = navController,
+                                navigateToDetail = { articleId ->
+                                    navController.navigate("DetailArticle/$articleId")
+                                }
+                            )
                         }
                         composable("About") {
                             AboutScreen(navController = navController)
