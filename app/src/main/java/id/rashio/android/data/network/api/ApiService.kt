@@ -7,12 +7,15 @@ import id.rashio.android.data.network.response.ArticleResponse
 import id.rashio.android.data.network.response.ArticlesResponse
 import id.rashio.android.data.network.response.LoginResponse
 import id.rashio.android.data.network.response.LogoutResponse
+import id.rashio.android.data.network.response.PredictionResponse
 import id.rashio.android.data.network.response.RegisterResponse
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
@@ -45,5 +48,11 @@ interface ApiService {
         @Body logoutRequest: LogoutRequest,
         @Header("Content-Type") contentType: String = "application/json"
     ): Result<LogoutResponse>
+
+    @POST("/v1/predictions")
+    suspend fun predict(
+        @Header("Authorization") authorization: String,
+        @Part image: MultipartBody.Part
+    ) : Result<PredictionResponse>
 
 }

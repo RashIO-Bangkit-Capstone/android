@@ -1,6 +1,8 @@
 package id.rashio.android
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -133,25 +135,22 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("Home") {
                             val context = LocalContext.current
-                            val activity = context as? Activity
-                            if (activity != null) {
-                                HomeScreen(
-                                    navController = navController,
-                                    activity = activity,
-                                    navigateToDetail = { articleId ->
-                                        navController.navigate("DetailArticle/$articleId")
-                                    },
-                                    navigateToIdentify = {
-                                        navController.navigate("IdentifySkin")
-                                    },
-                                    navigateToArticle = {
-                                        navController.navigate("Articles")
-                                    },
-                                    navigateToHistory = {
-                                        navController.navigate("History")
-                                    }
-                                )
-                            }
+                            HomeScreen(
+                                navController = navController,
+                                activity = context.findActivity(),
+                                navigateToDetail = { articleId ->
+                                    navController.navigate("DetailArticle/$articleId")
+                                },
+                                navigateToIdentify = {
+                                    navController.navigate("IdentifySkin")
+                                },
+                                navigateToArticle = {
+                                    navController.navigate("Articles")
+                                },
+                                navigateToHistory = {
+                                    navController.navigate("History")
+                                }
+                            )
                         }
                         composable("Detection") {
                             DetectionScreen(navController = navController)
@@ -209,4 +208,13 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+fun Context.findActivity(): Activity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    throw IllegalStateException("Permissions should be called in the context of an Activity")
 }

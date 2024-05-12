@@ -15,6 +15,7 @@ import id.rashio.android.data.local.room.ArticleDatabase
 import id.rashio.android.data.network.api.ApiConfig
 import id.rashio.android.data.network.api.ApiService
 import id.rashio.android.data.network.api.weather_api.WeatherAPI
+import id.rashio.android.data.repository.PredictionRepository
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
@@ -56,5 +57,12 @@ object ApplicationModules {
 
     @Provides
     fun provideDaoArticle(database: ArticleDatabase) = database.bookmarkArticleDao()
+
+    @Provides
+    fun providePredictionRepository(
+        apiService: ApiService,
+        tokenPreference: TokenPreference
+    ): PredictionRepository =
+        PredictionRepository(apiService, tokenPreference)
 
 }
