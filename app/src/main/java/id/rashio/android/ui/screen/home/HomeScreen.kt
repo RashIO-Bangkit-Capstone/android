@@ -134,7 +134,7 @@ fun HomeScreen(
                             val gmmIntentUri = Uri.parse("geo:0,0?q=dermatology+terdekat")
                             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                             mapIntent.setPackage("com.google.android.apps.maps")
-                                activity.startActivity(mapIntent)
+                            activity.startActivity(mapIntent)
                         }
                     )
                 }
