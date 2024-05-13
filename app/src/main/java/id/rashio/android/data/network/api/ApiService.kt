@@ -5,6 +5,7 @@ import id.rashio.android.data.network.request.LogoutRequest
 import id.rashio.android.data.network.request.RegisterRequest
 import id.rashio.android.data.network.response.ArticleResponse
 import id.rashio.android.data.network.response.ArticlesResponse
+import id.rashio.android.data.network.response.HistoryResponse
 import id.rashio.android.data.network.response.LoginResponse
 import id.rashio.android.data.network.response.LogoutResponse
 import id.rashio.android.data.network.response.PredictionResponse
@@ -53,6 +54,11 @@ interface ApiService {
     suspend fun predict(
         @Header("Authorization") authorization: String,
         @Part image: MultipartBody.Part
-    ) : Result<PredictionResponse>
+    ): Result<PredictionResponse>
 
+    @GET("/v1/predictions/{userId}")
+    suspend fun historyDetection(
+        @Header("authorization") authorization: String,
+        @Path("userId") id: String
+    ): Result<HistoryResponse>
 }

@@ -78,7 +78,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
-    implementation (libs.converter.moshi)
+    implementation(libs.converter.moshi)
 
 
     //    Hilt
@@ -93,10 +93,10 @@ dependencies {
     implementation(libs.coil.compose)
 
     // Location Service
-    implementation (libs.play.services.location)
+    implementation(libs.play.services.location)
 
     // Accompaniest
-    implementation (libs.accompanist.permissions)
+    implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.flowlayout)
 
     // Room
@@ -107,7 +107,7 @@ dependencies {
     kapt(libs.room.compiler)
 
     // Lottie
-    implementation (libs.lottie)
+    implementation(libs.lottie)
 
 
 }

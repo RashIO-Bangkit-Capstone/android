@@ -60,9 +60,9 @@ fun DetectionScreen(
 
     val selectImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                uri?.let {
-                    viewModel.imageDetection = getFileFromUri(uri, context)
-                }
+            uri?.let {
+                viewModel.imageDetection = getFileFromUri(uri, context)
+            }
         }
 
 
@@ -187,4 +187,5 @@ fun getFileFromUri(uri: Uri, context: Context): File {
 
     return photoFile
 }
+
 private const val FILENAME_FORMAT = "yyyy-MM-dd:HH-mm-ss-SSS"
