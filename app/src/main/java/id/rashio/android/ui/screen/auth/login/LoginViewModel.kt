@@ -1,6 +1,5 @@
 package id.rashio.android.ui.screen.auth.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,7 +44,6 @@ class LoginViewModel @Inject constructor(
                     id = id,
                     refreshToken = refreshToken
                 )
-                Log.d("Refresh Token", "login: test Refresh token : $refreshToken")
                 _uiState.value = LoginUiState.Success(authenticated = true)
             }
             .onFailure { e ->

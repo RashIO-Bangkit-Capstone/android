@@ -31,6 +31,7 @@ import id.rashio.android.ui.screen.articles.article_detail.ArticleDetailScreen
 import id.rashio.android.ui.screen.auth.login.LoginScreen
 import id.rashio.android.ui.screen.auth.register.RegisterScreen
 import id.rashio.android.ui.screen.detection.DetectionScreen
+import id.rashio.android.ui.screen.detection.detection_result.DetectionResultScreen
 import id.rashio.android.ui.screen.home.HomeScreen
 import id.rashio.android.ui.screen.identify.IdentifyScreem
 import id.rashio.android.ui.screen.profile.ProfileScreen
@@ -152,9 +153,6 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable("Detection") {
-                            DetectionScreen(navController = navController)
-                        }
                         composable("Profile") {
                             ProfileScreen(
                                 navController = navController,
@@ -202,6 +200,21 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("About") {
                             AboutScreen(navController = navController)
+                        }
+                        composable("Detection") {
+                            DetectionScreen(navController = navController)
+                        }
+                        composable("DetectionResult/{detectionResult}/{detectionPercentage}/{detectionImage}") {
+                            DetectionResultScreen(
+                                navController = navController,
+                                navigateToHome = {
+                                    navController.navigate("Home") {
+                                        popUpTo("Detection") {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
+                            )
                         }
                     }
                 }

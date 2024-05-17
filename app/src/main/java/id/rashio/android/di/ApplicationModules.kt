@@ -15,6 +15,7 @@ import id.rashio.android.data.local.room.ArticleDatabase
 import id.rashio.android.data.network.api.ApiConfig
 import id.rashio.android.data.network.api.ApiService
 import id.rashio.android.data.network.api.weather_api.WeatherAPI
+import id.rashio.android.data.repository.DiseaseRepository
 import id.rashio.android.data.repository.PredictionRepository
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -64,5 +65,8 @@ object ApplicationModules {
         tokenPreference: TokenPreference
     ): PredictionRepository =
         PredictionRepository(apiService, tokenPreference)
+
+    @Provides
+    fun provideDiseaseRepository(apiService: ApiService) = DiseaseRepository(apiService)
 
 }
