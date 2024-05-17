@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +20,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetectionViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
     private val predictionRepository: PredictionRepository
 ) : ViewModel() {
 

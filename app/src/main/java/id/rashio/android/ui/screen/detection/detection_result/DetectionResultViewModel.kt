@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetectionResultViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val diseaseRepository: DiseaseRepository
 ) : ViewModel() {
 

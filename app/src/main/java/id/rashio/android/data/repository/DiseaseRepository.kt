@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class DiseaseRepository @Inject constructor(
     private val apiService: ApiService
-) {
+){
     suspend fun getDisease(name: String): Result<DiseaseResponse> {
-        return apiService.getDisease(name)
+       return apiService.getDisease(name)
     }
 }

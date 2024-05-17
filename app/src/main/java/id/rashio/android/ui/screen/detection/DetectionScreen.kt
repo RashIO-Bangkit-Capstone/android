@@ -1,5 +1,6 @@
 package id.rashio.android.ui.screen.detection
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
@@ -205,6 +206,7 @@ fun DetectionScreen(
 
 }
 
+@SuppressLint("SimpleDateFormat")
 fun Context.createImageFile(): File {
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
     val imageFileName = "JPEG_" + timeStamp + "_"
