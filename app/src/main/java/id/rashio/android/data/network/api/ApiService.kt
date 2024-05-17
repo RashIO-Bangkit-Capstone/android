@@ -5,6 +5,7 @@ import id.rashio.android.data.network.request.LogoutRequest
 import id.rashio.android.data.network.request.RegisterRequest
 import id.rashio.android.data.network.response.ArticleResponse
 import id.rashio.android.data.network.response.ArticlesResponse
+import id.rashio.android.data.network.response.DiseaseResponse
 import id.rashio.android.data.network.response.HistoryResponse
 import id.rashio.android.data.network.response.LoginResponse
 import id.rashio.android.data.network.response.LogoutResponse
@@ -15,6 +16,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -50,6 +52,7 @@ interface ApiService {
         @Header("Content-Type") contentType: String = "application/json"
     ): Result<LogoutResponse>
 
+    @Multipart
     @POST("/v1/predictions")
     suspend fun predict(
         @Header("Authorization") authorization: String,
@@ -61,4 +64,10 @@ interface ApiService {
         @Header("authorization") authorization: String,
         @Path("userId") id: String
     ): Result<HistoryResponse>
+
+    @GET("/v1/diseases/{name}")
+    suspend fun getDisease(
+        @Path("name") name: String,
+        @Header("Content-Type") contentType: String = "application/json"
+    ): Result<DiseaseResponse>
 }

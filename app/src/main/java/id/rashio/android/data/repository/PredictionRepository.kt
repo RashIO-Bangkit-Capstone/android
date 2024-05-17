@@ -1,6 +1,5 @@
 package id.rashio.android.data.repository
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import id.rashio.android.data.local.preferences.TokenPreference
 import id.rashio.android.data.model.HistoryPredictionItem
@@ -56,7 +55,6 @@ class PredictionRepository @Inject constructor(
                         }
                 },
                 onFailure = {
-                    Log.d("Repository Pred", "getHistory: $it")
                     emptyList()
                 }
             )

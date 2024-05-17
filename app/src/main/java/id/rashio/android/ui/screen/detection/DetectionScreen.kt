@@ -1,14 +1,17 @@
 package id.rashio.android.ui.screen.detection
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -19,10 +22,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,6 +51,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -77,6 +86,22 @@ fun DetectionScreen(
             viewModel.imageDetection = file
         }
 
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = uiState) {
+
+        if (uiState is DetectionUiState.Success) {
+            val successUiState = uiState as DetectionUiState.Success
+            val encodedUrl =
+                URLEncoder.encode(successUiState.imageUrl, StandardCharsets.UTF_8.toString())
+            navController.navigate("DetectionResult/${successUiState.nameDisease}/$${successUiState.percentage}/${encodedUrl}")
+        }
+        if (uiState is DetectionUiState.Error) {
+            Toast.makeText(context, (uiState as DetectionUiState.Error).message, Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
 
     Scaffold(modifier = Modifier.fillMaxWidth(),
         topBar = {
@@ -90,71 +115,98 @@ fun DetectionScreen(
                 items = BottomNavigationItem.getMenuBottomItems()
             )
         }, content = { innerPadding ->
-            Column(modifier = Modifier.consumeWindowInsets(innerPadding)) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    val painter =
-                        if (viewModel.imageDetection != null) rememberAsyncImagePainter(model = viewModel.imageDetection) else painterResource(
-                            id = R.drawable.baseline_crop_original_24
-                        )
-                    Image(
-                        painter = painter,
-                        contentDescription = null,
-                        modifier = Modifier.size(300.dp)
-                    )
-                    Text(
-                        stringResource(R.string.desc_detection_inst),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Light
-                    )
-                    Button(
-                        onClick = { selectImageLauncher.launch("image/*") }, modifier = Modifier
-                            .padding(top = 16.dp)
-                            .width(250.dp)
-                            .border(1.dp, Color.Gray, shape = MaterialTheme.shapes.extraLarge),
-                        colors = buttonColors(
-                            Color.White,
-                            MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text(text = stringResource(R.string.galeri))
-                    }
-                    Button(
-                        onClick = {
-                            cameraLauncher.launch(uri)
-                        }, modifier = Modifier
-                            .padding(top = 8.dp)
-                            .width(250.dp)
-                            .border(1.dp, Color.Gray, shape = MaterialTheme.shapes.extraLarge),
-                        colors = buttonColors(
-                            Color.White,
-                            MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text(text = stringResource(R.string.camera))
-                    }
+            when (uiState) {
+                DetectionUiState.Empty,
+                is DetectionUiState.Success -> {
+                    Column(modifier = Modifier.consumeWindowInsets(innerPadding)) {
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            val painter =
+                                if (viewModel.imageDetection != null) rememberAsyncImagePainter(
+                                    model = viewModel.imageDetection
+                                ) else painterResource(
+                                    id = R.drawable.baseline_crop_original_24
+                                )
+                            Image(
+                                painter = painter,
+                                contentDescription = null,
+                                modifier = Modifier.size(300.dp)
+                            )
+                            Text(
+                                stringResource(R.string.desc_detection_inst),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Light
+                            )
+                            Button(
+                                onClick = { selectImageLauncher.launch("image/*") },
+                                modifier = Modifier
+                                    .padding(top = 16.dp)
+                                    .width(250.dp)
+                                    .border(
+                                        1.dp,
+                                        Color.Gray,
+                                        shape = MaterialTheme.shapes.extraLarge
+                                    ),
+                                colors = buttonColors(
+                                    Color.White,
+                                    MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Text(text = stringResource(R.string.galeri))
+                            }
+                            Button(
+                                onClick = {
+                                    cameraLauncher.launch(uri)
+                                }, modifier = Modifier
+                                    .padding(top = 8.dp)
+                                    .width(250.dp)
+                                    .border(
+                                        1.dp,
+                                        Color.Gray,
+                                        shape = MaterialTheme.shapes.extraLarge
+                                    ),
+                                colors = buttonColors(
+                                    Color.White,
+                                    MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Text(text = stringResource(R.string.camera))
+                            }
 
-                    Spacer(modifier = Modifier.size(16.dp))
-                    Button(
-                        onClick = {
-                            /* TODO: Implement detection */
-                        },
-                        modifier = Modifier
-                            .padding(top = 8.dp, bottom = 36.dp)
-                            .width(250.dp),
-                    ) {
-                        Text(text = stringResource(R.string.mulai_deteksi))
-                    }
+                            Spacer(modifier = Modifier.size(16.dp))
+                            Button(
+                                onClick = {
+                                    viewModel.predictImage()
+                                },
+                                modifier = Modifier
+                                    .padding(top = 8.dp, bottom = 36.dp)
+                                    .width(250.dp),
+                            ) {
+                                Text(text = stringResource(R.string.mulai_deteksi))
+                            }
 
+                        }
+                    }
+                }
+
+                is DetectionUiState.Error -> {
+
+                }
+
+                DetectionUiState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
                 }
             }
         })
 
 }
 
+@SuppressLint("SimpleDateFormat")
 fun Context.createImageFile(): File {
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
     val imageFileName = "JPEG_" + timeStamp + "_"

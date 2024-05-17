@@ -39,7 +39,13 @@ val inputFormat =
 val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
 @Composable
-fun HistoryCard(imageUrl: String, result: String, percentage: Float, createdAt: String) {
+fun HistoryCard(
+    imageUrl: String,
+    result: String,
+    percentage: Float,
+    createdAt: String,
+    onArticleClick: (String, Float, String) -> Unit
+) {
 
     val date = inputFormat.parse(createdAt)
     val formattedDate = outputFormat.format(date!!)
@@ -50,7 +56,9 @@ fun HistoryCard(imageUrl: String, result: String, percentage: Float, createdAt: 
 
     Card(
         modifier = Modifier
-            .clickable { }
+            .clickable {
+                onArticleClick(result, percentage, imageUrl)
+            }
             .fillMaxWidth()
             .height(125.dp)
             .padding(bottom = 8.dp),
@@ -81,7 +89,7 @@ fun HistoryCard(imageUrl: String, result: String, percentage: Float, createdAt: 
                 ) {
                     Text(text = result, fontWeight = FontWeight.Bold, fontSize = 14.sp)
                     MultiStyleText(
-                        text1 = "Akurasi: ",
+                        text1 = "Confidence: ",
                         color1 = Color(0XFFCA965C),
                         text2 = "$formattedPercentage%",
                         color2 = Color(0XFF876445)

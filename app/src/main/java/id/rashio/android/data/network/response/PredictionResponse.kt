@@ -5,23 +5,26 @@ import com.google.gson.annotations.SerializedName
 data class PredictionResponse(
 
     @field:SerializedName("code")
-    val code: Int? = null,
+    val code: Int,
 
     @field:SerializedName("data")
-    val data: Data? = null,
+    val data: Data,
 
     @field:SerializedName("message")
-    val message: String? = null,
+    val message: String,
 
     @field:SerializedName("status")
-    val status: String? = null
+    val status: String
 )
 
 data class Data(
 
     @field:SerializedName("result")
-    val result: String? = null,
+    val result: String,
 
     @field:SerializedName("percentage")
-    val percentage: Int? = null
+    val percentage: Float,
+
+    @field:SerializedName("imageUrl")
+    val imageUrl: String
 )
