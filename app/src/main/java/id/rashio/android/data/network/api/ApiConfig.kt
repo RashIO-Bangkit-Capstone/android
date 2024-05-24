@@ -24,7 +24,7 @@ class ApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://api-dev.rashio.software/")
+                .baseUrl("https://api-dev.rashio.tech/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(NetworkCallAdapterFactory.create())
                 .client(client)

@@ -1,5 +1,7 @@
 package id.rashio.android.ui.screen.auth.register
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -22,6 +24,7 @@ import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -65,7 +69,10 @@ fun RegisterScreen(
     var phoneValue by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    val registerButtonEnabled by remember { derivedStateOf { (passwordValue == confirmPassword) and (passwordValue.isNotBlank() and confirmPassword.isNotBlank()) } }
+    var agreeToTerms by remember { mutableStateOf(false) }
+
+
+    val registerButtonEnabled by remember { derivedStateOf { (passwordValue == confirmPassword) and (passwordValue.isNotBlank() and confirmPassword.isNotBlank()) and agreeToTerms } }
 
     val uiState = viewModel.uiState.collectAsState().value
     when (uiState) {
@@ -183,6 +190,58 @@ fun RegisterScreen(
             label = stringResource(R.string.confirm_password),
             imeAction = ImeAction.Done,
         )
+        val context = LocalContext.current
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 8.dp)
+        ) {
+            Checkbox(
+                checked = agreeToTerms,
+                onCheckedChange = { agreeToTerms = it }
+            )
+            Column {
+                Row {
+                    Text(
+                        text = "I hereby agree to the ",
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        text = "Terms and Condition ",
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontSize = 14.sp,
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier.clickable {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://rashio.tech/terms-condition")
+                                )
+                            context.startActivity(intent)
+                        }
+                    )
+                }
+                Row {
+                    Text(
+                        text = "and ",
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        text = "Privacy Policy ",
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontSize = 14.sp,
+                        textDecoration = TextDecoration.Underline,
+                        modifier = Modifier.clickable {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://rashio.tech/user-policy")
+                                )
+                            context.startActivity(intent)
+                        }
+                    )
+                }
+            }
+        }
 
 
         Button(
