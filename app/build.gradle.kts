@@ -95,7 +95,7 @@ dependencies {
     // Location Service
     implementation(libs.play.services.location)
 
-    // Accompaniest
+    // Accompanist
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.flowlayout)
 

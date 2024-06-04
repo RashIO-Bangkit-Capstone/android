@@ -6,13 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import id.rashio.android.data.local.preferences.TokenPreference
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val tokenPreference: TokenPreference
+    tokenPreference: TokenPreference
 ) : ViewModel() {
 
     val authState = tokenPreference.userData.map { userData ->
@@ -21,7 +20,7 @@ class MainViewModel @Inject constructor(
         } else {
             AuthenticationState.Authenticated
         }
-    }.sample(2000L).stateIn(
+    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
         initialValue = AuthenticationState.Unknown

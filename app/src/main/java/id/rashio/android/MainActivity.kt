@@ -22,8 +22,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import id.rashio.android.ui.screen.articles.ArticlesScreen
@@ -55,6 +57,9 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     val navController = rememberNavController()
+                    val currentDestination: NavDestination? =
+                        navController.currentBackStackEntryAsState().value?.destination
+
                     val mainViewModel = hiltViewModel<MainViewModel>()
                     val authState = mainViewModel.authState.collectAsState()
 
@@ -62,15 +67,35 @@ class MainActivity : ComponentActivity() {
                         when (authState.value) {
                             AuthenticationState.Authenticated ->
                                 navController.navigate("Home") {
-                                    popUpTo("Login") {
-                                        inclusive = true
+                                    launchSingleTop = true
+
+                                    currentDestination?.let { d ->
+                                        if (d.route == "Login") {
+                                            popUpTo("Login") {
+                                                inclusive = true
+                                            }
+                                        } else {
+                                            popUpTo("Splash") {
+                                                inclusive = true
+                                            }
+                                        }
                                     }
                                 }
 
                             AuthenticationState.Unauthenticated ->
                                 navController.navigate("Login") {
-                                    popUpTo("Splash") {
-                                        inclusive = true
+                                    launchSingleTop = true
+
+                                    currentDestination?.let { d ->
+                                        if (d.route == "Profile") {
+                                            popUpTo("Home") {
+                                                inclusive = true
+                                            }
+                                        } else {
+                                            popUpTo("Splash") {
+                                                inclusive = true
+                                            }
+                                        }
                                     }
                                 }
 
@@ -109,9 +134,11 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         ) {
-                            LoginScreen(navigateToRegister = {
-                                navController.navigate("Register")
-                            })
+                            LoginScreen(
+                                navigateToRegister = {
+                                    navController.navigate("Register")
+                                }
+                            )
                         }
                         composable("Register",
                             enterTransition = {
@@ -132,7 +159,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         ) {
-                            RegisterScreen(navigateBack = navController::navigateUp)
+                            RegisterScreen(navigateBack = navController::popBackStack)
                         }
                         composable("Home") {
                             val context = LocalContext.current
@@ -165,13 +192,6 @@ class MainActivity : ComponentActivity() {
                                 navigateToAbout = {
                                     navController.navigate("About")
                                 },
-                                navigateToLogin = {
-                                    navController.navigate("Login") {
-                                        popUpTo("Profile") {
-                                            inclusive = true
-                                        }
-                                    }
-                                }
                             )
                         }
                         composable("Articles") {

@@ -59,7 +59,6 @@ import id.rashio.android.ui.theme.poppinsFontFamily
 @Composable
 fun RegisterScreen(
     navigateBack: () -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: RegisterViewModel = hiltViewModel()
 ) {
     var nameValue by remember { mutableStateOf("") }

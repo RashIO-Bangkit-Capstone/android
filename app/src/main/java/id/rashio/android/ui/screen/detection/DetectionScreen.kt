@@ -43,10 +43,15 @@ import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import id.rashio.android.R
 import id.rashio.android.ui.components.BottomNavBar
 import id.rashio.android.ui.components.BottomNavigationItem
 import id.rashio.android.ui.components.TopBarComp
+import id.rashio.android.ui.theme.poppinsFontFamily
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -60,7 +65,6 @@ import java.util.Objects
 
 @Composable
 fun DetectionScreen(
-    modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: DetectionViewModel = hiltViewModel()
 ) {
@@ -97,10 +101,13 @@ fun DetectionScreen(
             navController.navigate("DetectionResult/${successUiState.nameDisease}/$${successUiState.percentage}/${encodedUrl}")
         }
         if (uiState is DetectionUiState.Error) {
+
             Toast.makeText(context, (uiState as DetectionUiState.Error).message, Toast.LENGTH_SHORT)
                 .show()
         }
     }
+
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.not_detected))
 
 
     Scaffold(modifier = Modifier.fillMaxWidth(),
@@ -193,6 +200,50 @@ fun DetectionScreen(
                 }
 
                 is DetectionUiState.Error -> {
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "Whoops!",
+                            fontFamily = poppinsFontFamily,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(16.dp)
+                        )
+
+                        LottieAnimation(
+                            composition = composition,
+                            iterations = LottieConstants.IterateForever
+                        )
+
+                        Text(
+                            text = "There is no disease detected",
+                            fontFamily = poppinsFontFamily,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(top = 12.dp)
+                        )
+
+                        Text(
+                            text = "Please check your image and try again",
+                            fontFamily = poppinsFontFamily,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Button(
+                            onClick = { navController.popBackStack() },
+                            modifier = Modifier.padding(12.dp)
+                        ) {
+                            Text(text = "Okay")
+                        }
+
+                    }
 
                 }
 

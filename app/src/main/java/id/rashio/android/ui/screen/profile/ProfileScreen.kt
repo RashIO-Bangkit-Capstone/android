@@ -44,7 +44,6 @@ fun ProfileScreen(
     navigateToBookmarkedArticles: () -> Unit,
     navigateToHistory: () -> Unit,
     navigateToAbout: () -> Unit,
-    navigateToLogin: () -> Unit
 ) {
 
     val userData by viewModel.userData.collectAsState()
@@ -56,7 +55,6 @@ fun ProfileScreen(
             actions = listOf {
                 IconButton(onClick = {
                     viewModel.logout()
-                    navigateToLogin()
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_logout),

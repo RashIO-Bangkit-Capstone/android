@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.rashio.android.data.local.preferences.TokenPreference
 import id.rashio.android.data.repository.AuthenticationRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 sealed class LoginUiState {
     data object Loading : LoginUiState()
-    data class Success(val authenticated: Boolean = false) : LoginUiState()
+    data object Idle : LoginUiState()
     data class Error(val message: String) : LoginUiState()
 }
 
@@ -44,13 +45,14 @@ class LoginViewModel @Inject constructor(
                     id = id,
                     refreshToken = refreshToken
                 )
-                _uiState.value = LoginUiState.Success(authenticated = true)
             }
             .onFailure { e ->
                 _uiState.value = LoginUiState.Error(e.message ?: "An error occurred")
+                delay(5000)
+                _uiState.value = LoginUiState.Idle
             }
     }
 
-    val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Success())
+    val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
     val uiState: StateFlow<LoginUiState> = _uiState
 }

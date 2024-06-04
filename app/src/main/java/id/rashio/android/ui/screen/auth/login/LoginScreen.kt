@@ -24,7 +24,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,7 +49,6 @@ import id.rashio.android.ui.theme.poppinsFontFamily
 @Composable
 fun LoginScreen(
     navigateToRegister: () -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     var emailValue by remember { mutableStateOf("") }
@@ -66,15 +64,8 @@ fun LoginScreen(
             }
         }
 
-        is LoginUiState.Success -> {
-            // Navigate to home
-            LaunchedEffect(key1 = uiState.authenticated) {
-                if (uiState.authenticated) {
-                    // Navigate to home
-                    navigateToRegister()
-                }
-            }
-
+        is LoginUiState.Idle -> {
+            // Do nothing
         }
 
         is LoginUiState.Error -> {
