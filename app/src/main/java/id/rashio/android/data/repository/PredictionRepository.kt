@@ -42,17 +42,14 @@ class PredictionRepository @Inject constructor(
         emit(
             response.fold(
                 onSuccess = { historyResponse ->
-                    historyResponse.data.predictionLogs.sortedBy {
-                        it.createdAt
+                    historyResponse.data.predictionLogs.map {
+                        HistoryPredictionItem(
+                            result = it.result,
+                            createdAt = it.createdAt,
+                            imageUrl = it.imageUrl,
+                            percentage = it.percentage
+                        )
                     }
-                        .map {
-                            HistoryPredictionItem(
-                                result = it.result,
-                                createdAt = it.createdAt,
-                                imageUrl = it.imageUrl,
-                                percentage = it.percentage
-                            )
-                        }
                 },
                 onFailure = {
                     emptyList()
