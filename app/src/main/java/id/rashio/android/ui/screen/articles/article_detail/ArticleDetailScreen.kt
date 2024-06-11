@@ -28,7 +28,6 @@ import id.rashio.android.ui.components.articles.article_detail.BodyArticle
 
 @Composable
 fun ArticleDetailScreen(
-    modifier: Modifier = Modifier,
     viewModel: ArticleDetailViewModel = hiltViewModel(),
     navController: NavController
 ) {
