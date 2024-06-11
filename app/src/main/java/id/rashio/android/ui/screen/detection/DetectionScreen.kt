@@ -222,7 +222,7 @@ fun DetectionScreen(
                         )
 
                         Text(
-                            text = "There is no disease detected",
+                            text = "We can't detect your image",
                             fontFamily = poppinsFontFamily,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,

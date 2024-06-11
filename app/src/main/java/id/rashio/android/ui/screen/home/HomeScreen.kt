@@ -48,7 +48,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     activity: Activity,
     navigateToDetail: (Int) -> Unit,
-    navigateToIdentify: () -> Unit,
+    navigateToDetection: () -> Unit,
     navigateToArticle: () -> Unit,
     navigateToHistory: () -> Unit
 ) {
@@ -110,10 +110,10 @@ fun HomeScreen(
                 )
                 {
                     ItemFeature(
-                        image = R.drawable.identify_skin_icon,
-                        text = R.string.identify_skin,
+                        image = R.drawable.skin_disease_detection_icon,
+                        text = R.string.skin_disease_detection,
                         onClick = {
-                            navigateToIdentify()
+                            navigateToDetection()
                         })
                     ItemFeature(
                         image = R.drawable.articles_icon,

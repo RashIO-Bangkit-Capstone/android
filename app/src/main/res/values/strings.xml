@@ -23,4 +23,5 @@
     <string name="mulai_deteksi">Mulai Deteksi</string>
     <string name="tentang_aplikasi">Tentang Aplikasi</string>
     <string name="tentang_desc">Aplikasi ini dibuat untuk membantu masyarakat umum membedakan berbagai penyakit kulit berdasarkan gejala seperti ruam dan kemerahan juga membantu masyarakat mengenali tipe kulit wajahnya. Kami percaya bahwa pemahaman yang lebih baik tentang kondisi kulit dapat mencegah penyebaran penyakit berbahaya dan meningkatkan kesehatan masyarakat. RashIO memberikan informasi yang akurat dan mudah dipahami, membantu pengguna mengenali dan memahami kondisi kulit mereka. Aplikasi ini adalah langkah kami untuk melindungi dan merawat kesehatan kulit. </string>
+    <string name="skin_disease_detection">Skin Disease Detection</string>
 </resources>

@@ -35,7 +35,6 @@ import id.rashio.android.ui.screen.auth.register.RegisterScreen
 import id.rashio.android.ui.screen.detection.DetectionScreen
 import id.rashio.android.ui.screen.detection.detection_result.DetectionResultScreen
 import id.rashio.android.ui.screen.home.HomeScreen
-import id.rashio.android.ui.screen.identify.IdentifyScreem
 import id.rashio.android.ui.screen.profile.ProfileScreen
 import id.rashio.android.ui.screen.profile.about.AboutScreen
 import id.rashio.android.ui.screen.profile.bookmarked_articles.BookmarkedArticlesScreen
@@ -169,8 +168,10 @@ class MainActivity : ComponentActivity() {
                                 navigateToDetail = { articleId ->
                                     navController.navigate("DetailArticle/$articleId")
                                 },
-                                navigateToIdentify = {
-                                    navController.navigate("IdentifySkin")
+                                navigateToDetection = {
+                                    navController.navigate("Detection"){
+                                        launchSingleTop = true
+                                    }
                                 },
                                 navigateToArticle = {
                                     navController.navigate("Articles")
@@ -203,9 +204,6 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("DetailArticle/{articleId}") {
                             ArticleDetailScreen(navController = navController)
-                        }
-                        composable("IdentifySkin") {
-                            IdentifyScreem(navController = navController)
                         }
                         composable("History") {
                             DetectionHistoryScreen(navController = navController)
