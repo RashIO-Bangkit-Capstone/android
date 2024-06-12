@@ -78,7 +78,6 @@ fun DetectionScreen(
             }
         }
 
-
     val file = context.createImageFile()
     val uri = FileProvider.getUriForFile(
         Objects.requireNonNull(context),
@@ -191,6 +190,7 @@ fun DetectionScreen(
                                 modifier = Modifier
                                     .padding(top = 8.dp, bottom = 36.dp)
                                     .width(250.dp),
+                                enabled = viewModel.imageDetection != null
                             ) {
                                 Text(text = stringResource(R.string.mulai_deteksi))
                             }
