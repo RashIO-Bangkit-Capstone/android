@@ -169,7 +169,7 @@ class MainActivity : ComponentActivity() {
                                     navController.navigate("DetailArticle/$articleId")
                                 },
                                 navigateToDetection = {
-                                    navController.navigate("Detection"){
+                                    navController.navigate("Detection") {
                                         launchSingleTop = true
                                     }
                                 },
@@ -224,7 +224,6 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("DetectionResult/{detectionResult}/{detectionPercentage}/{detectionImage}") {
                             DetectionResultScreen(
-                                navController = navController,
                                 navigateToHome = {
                                     navController.navigate("Home") {
                                         popUpTo("Detection") {
