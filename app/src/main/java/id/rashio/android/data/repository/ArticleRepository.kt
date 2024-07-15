@@ -45,7 +45,7 @@ class ArticleRepository @Inject constructor(
 
     fun getArticlesHome(): Flow<List<BookmarkableArticle>> = articleDao.getAllArticleBookmark()
         .combine(networkArticles) { bookmarkedArticles, networkArticles ->
-            networkArticles.take(3)
+            networkArticles.takeLast(3)
                 .map { networkArticle ->
                     networkArticle.copy(isBookmarked = bookmarkedArticles.any { it.articleId == networkArticle.articleId })
                 }
